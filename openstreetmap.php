@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Rotterdam Map with Mistakes</title>
+    <title>Rotterdam Map with User Location</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
+    <?php
+    include_once 'assets/nav.php';
+    ?>
     <div id="map" style="height: 500px;"></div>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -16,17 +19,6 @@
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '© OpenStreetMap contributors'
         }).addTo(map);
-
-        var mistakes = [
-            { lat: 51.9167, lon: 4.4758, message: 'Incorrect data' },
-            { lat: 51.922, lon: 4.481, message: 'Missing information' },
-            // Add more markers as needed
-        ];
-
-        mistakes.forEach(function (mistake) {
-            L.marker([mistake.lat, mistake.lon]).addTo(map)
-                .bindPopup(mistake.message);
-        });
 
         // Function to add a new marker on map click
         function onMapClick(e) {
@@ -40,6 +32,25 @@
 
         // Add click event listener to the map
         map.on('click', onMapClick);
+
+        // Get user's location using Geolocation API
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    var userLat = position.coords.latitude;
+                    var userLon = position.coords.longitude;
+
+                    // Add user marker to the map
+                    var userMarker = L.marker([userLat, userLon]).addTo(map)
+                        .bindPopup('Your Location').openPopup();
+                },
+                function (error) {
+                    console.error('Error getting user location:', error.message);
+                }
+            );
+        } else {
+            console.error('Geolocation is not supported by your browser.');
+        }
     </script>
 </body>
 </html>
