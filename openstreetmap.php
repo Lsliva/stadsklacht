@@ -29,6 +29,7 @@
                     .bindPopup(popupMessage);
 
                     console.log('Marker Coordinates:', e.latlng.lat, e.latlng.lng);
+                    sendDataToPHP(e);
 
             }
         }
@@ -55,10 +56,13 @@
         } else {
             console.error('Geolocation is not supported by your browser.');
         }
-        function sendDataToPHP() {
+        function sendDataToPHP(e) {
+            // let userId = 1;
+            let klachtenId = 1;
+
         // Prepare the data to send
         const data = {
-            userId: encodeURIComponent(userId),
+            klachtenId: encodeURIComponent(klachtenId),
             latitude: e.latlng.lat,
             longitude: e.latlng.lng,
         };
@@ -79,9 +83,9 @@
         if (response.ok) {
         // success message for succesfully sending the data
         console.log('Data sent successfully');
-        console.log('Id:', data.userId);
-        console.log('level:', data.latitude);
-        console.log('highScore:', data.longitude);
+        console.log('Id:', data.klachtenId);
+        console.log('Latitude:', data.latitude);
+        console.log('Longitude:', data.longitude);
         } else {
         throw new Error('Error sending data: ' + response.status);
         }
@@ -90,6 +94,19 @@
         // Handle any errors that occurred during the request
         console.error(error);
     });}
+
+     // Fetch GPS locations from PHP
+     fetch('getGps.php')
+            .then(response => response.json())
+            .then(data => {
+                // Create markers for each GPS location
+                data.forEach(location => {
+                    L.marker([location.latitude, location.longitude])
+                        .addTo(map)
+                        .bindPopup(`Klachten ID: ${location.klachtenId}`);
+                });
+            })
+            .catch(error => console.error('Error fetching GPS locations:', error));
     </script>
 </body>
 </html>
