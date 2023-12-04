@@ -1,6 +1,5 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <!-- Basic -->
@@ -79,7 +78,6 @@
 </nav>
 </header>
 </body>
-=======
 <?php
 require 'sessions.php';
 ?>
@@ -199,4 +197,4 @@ require 'sessions.php';
     <script>
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
->>>>>>> 79d3e831c846e91de1e89500ac6b148e9ae96587
+
