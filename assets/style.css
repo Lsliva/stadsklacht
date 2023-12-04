@@ -1,3 +1,37 @@
+/* main body */
+* {
+    margin: 0;
+    padding: 0; 
+    border: 0;
+    outline: 0;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    
+}
+.content {
+ max-height: 75%;
+    min-height: 75%;
+    /* max-width: 100%; */
+    margin-left: 15%;
+    margin-right: 15%;
+    margin-bottom: 5%;
+    margin-top: 5%;
+    padding: 2rem;
+    height: auto;
+    /* min-width: 1000px; */
+    /* width: auto; */
+   position: relative;
+    /* display: flex;
+    flex-direction: row; */
+    /* justify-content: space-between; */
+    /* border-width: 100px; */
+    overflow: hidden;
+    box-shadow: 40px 40px 500px rgb(0, 0, 0);
+    border-radius: 20px;
+    gap: 1rem;
+}
 /* nav */
 .accountDiv {
     margin: 5px;
