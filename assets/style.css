@@ -448,6 +448,10 @@ li {
 75% {
     background-position: 100% 0;
 }
+
+.registerview{
+  text-align center;
+}
 }
 /* volume bar */
 /* input[type="range"] {

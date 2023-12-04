@@ -37,14 +37,7 @@
                         <div class="labelInput">
                         <label class="iconField" for="email"><i class='bx bxs-envelope' ></i></label>
                         <input type="text" id="email" name="email" placeholder="email" value="<?php echo isset($_SESSION['emailPost']) ? $_SESSION['emailPost'] : ''; ?>" required>
-                        </div>
-                        <div class="labelInput">
-                        <label class="iconField" for="profile_pic"><i class='bx bxs-user-account'></i></label>
-                            <select id="profile_pic" name="profile_pic">
-                                <option value="default.jfif">Default</option>
-                                <option value="male-1.png">Male</option>
-                                <option value="female-user.png">Female</option>
-                            </select>  
+                        </div>  
                         </div>
                  
                         <div class="labelInput">

@@ -1,57 +1,46 @@
 <?php
-
 session_start();
-$username = $_POST['username'];
-$password = $_POST['password'];
+$naam = $_POST['username']; // Aangepast naar 'naam'
+$email = $_POST['email'];
+$wachtwoord = $_POST['password']; // Aangepast naar 'wachtwoord'
 
-$_SESSION['usernamePost'] = $_POST['username'];
-$_SESSION['passwordPost'] = $POST['password'];
-
+$_SESSION['usernamePost'] = $naam; // Aangepast naar 'naam'
+$_SESSION['emailPost'] = $email;
+$_SESSION['passwordPost'] = $_POST['password'];
 
 try {
-    $servername = "localhost:3306";
+    $servername = "localhost";
+    $dbusername = "root";
+    $dbpassword = "";
+    $dbname = "project";
 
-    // $servername = "srv12373.hostingserver.nl:3306";
-    $dbusername = "lukas";
-    $dbpassword = "GamaKayK87--";
-    $dbname = "bpv";
-
-
-    // Create PDO connection
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
-
-    // Set PDO error mode to exception
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Prepare SQL statement
-    $stmt = $conn->prepare("SELECT * FROM players WHERE username = :username");
-    $stmt->bindParam(':username', $username);
-
-    // Execute statement
+    // Check if username or email already exists
+    $stmt = $conn->prepare("SELECT * FROM gebruikers WHERE naam = :naam OR email = :email"); // Aangepast naar 'naam'
+    $stmt->bindParam(':naam', $naam); // Aangepast naar 'naam'
+    $stmt->bindParam(':email', $email);
     $stmt->execute();
+    $existingUser = $stmt->fetch();
 
-    // Fetch all rows
-    $results = $stmt->fetchAll();
-
-    if (!empty($results)) {
-        $hashed_password = $results[0]['password'];
-        if (password_verify($password, $hashed_password)) {
-            $_SESSION['username'] = $username;
-            if (isset($_SESSION['return_to'])) {
-                $return_to = $_SESSION['return_to'];
-                unset($_SESSION['return_to']);
-                header('Location: ' . $return_to);
-            } else {
-                header("location: /");
-            }} else {
-            $_SESSION['message'] = 'Invalid login credentials. Please try again.';
-            header("Location: loginForm");
-        }
+    if ($existingUser) {
+        $_SESSION['message'] = 'Username or email already exists. Please choose a different one.';
+        header("Location: registrationForm"); // Redirect to registration form
     } else {
-        $_SESSION['message'] = 'Invalid login credentials. Please try again.';
-        header("Location: loginForm");
+        // Insert new user into the database
+        $hashed_password = password_hash($wachtwoord, PASSWORD_DEFAULT); // Aangepast naar 'wachtwoord'
+
+        $stmt = $conn->prepare("INSERT INTO gebruikers (naam, email, wachtwoord) VALUES (:naam, :email, :wachtwoord)"); // Aangepast naar 'naam' en 'wachtwoord'
+        $stmt->bindParam(':naam', $naam); // Aangepast naar 'naam'
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':wachtwoord', $hashed_password); // Aangepast naar 'wachtwoord'
+        $stmt->execute();
+
+        $_SESSION['message'] = 'Registration successful. You can now log in.';
+        header("Location: loginForm"); // Redirect to login form
     }
-    } catch(PDOException $e) {
-        echo "Connection failed: " . $e->getMessage();
-    }
-    ?>
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
+?>
