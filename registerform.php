@@ -7,17 +7,6 @@
     <title>Register</title>
     <link rel="stylesheet" href="assets/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4773475340562413"
-     crossorigin="anonymous"></script>
-     <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
-
-     <script type="text/javascript">
-      var onloadCallback = function() {
-        grecaptcha.render('html_element', {
-          'sitekey' : '6Lf2PqQoAAAAANdktJm04GDq_kz-4qUajDePvf3F'
-        });
-      };
-    </script>
 </head>
 <body>
     <?php include("assets/nav.php"); ?>
@@ -48,25 +37,9 @@
                         <label class="iconField" for="confirm_password"><i class='bx bxs-lock-alt' ></i></label>
                         <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" value="<?php echo isset($_SESSION['confirm_passwordPost']) ? $_SESSION['confirm_passwordPost'] : ''; ?>" required>
                         </div>
-                        <p id="passwordMessage"></p>
-                        <div class="room">
-                            <button id="warningExplained">
-                                    <p id="warning"><i class='bx bx-error' ></i>Terms:<i class='bx bx-error' ></i> <br>Please do not fill in passwords used on other platforms.</p>
-                                    <!-- <h2 id="warningTitle"></h2>
-                                    <p id="warningText"></p>
-                                    <p id="warningText2"></p> -->
-                            </button>
-                        </div> 
-                        
+                        <p id="passwordMessage"></p>                        
                         <div class="labelInput">
-
-                        <input type="checkbox" id="agreement"><label>Agree to the terms</label>
-                        </div>
-                        <div id="html_element"></div>
-
-                        <p id="checkboxMessage"></p>
-
-                        <div id="messagePHP"><?php
+                        </div>                        <div id="messagePHP"><?php
 
                         if (isset($_SESSION['message'])) {
                             echo $_SESSION['message'];
@@ -74,9 +47,6 @@
                         }
                         ?></div>
                         <input type="submit" name="register" value="Create Account" class="submitButton">
-                        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-    async defer>
-    </script>
                     </form>
                 </div>
             </div>
@@ -94,7 +64,6 @@
             padding: 10px 15px;
             margin: 5px 0;
             box-sizing: border-box;
-            background-image: url('img/gif.gif');
         }
 
         #agreement {
@@ -108,16 +77,9 @@
         margin: 5px 0;
         box-sizing: border-box;
         /* background-image: url('img/gif.gif'); */
-        background-color: #ffc0cb;
+        background-color: grey;
 
         border-radius: 10px;
-    }
-    #update:hover {
-        /* input[type="submit"] { */
-        background-color: #f23f5f;
-    }
-    select option {
-        background-color: #ffc0cb;
     }
 
 

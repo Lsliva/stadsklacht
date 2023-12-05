@@ -12,7 +12,7 @@ try {
     $servername = "localhost";
     $dbusername = "root";
     $dbpassword = "";
-    $dbname = "project";
+    $dbname = "stadsklacht";
 
     $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -26,7 +26,7 @@ try {
 
     if ($existingUser) {
         $_SESSION['message'] = 'Username or email already exists. Please choose a different one.';
-        header("Location: registrationForm"); // Redirect to registration form
+        header("Location: registerForm"); // Redirect to registration form
     } else {
         // Insert new user into the database
         $hashed_password = password_hash($wachtwoord, PASSWORD_DEFAULT); // Aangepast naar 'wachtwoord'

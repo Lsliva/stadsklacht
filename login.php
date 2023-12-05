@@ -14,7 +14,7 @@ try {
     // $servername = "srv12373.hostingserver.nl:3306";
     $dbusername = "root";
     $dbpassword = "";
-    $dbname = "project";
+    $dbname = "stadsklacht";
 
 
     // Create PDO connection
@@ -55,3 +55,7 @@ try {
         echo "Connection failed: " . $e->getMessage();
     }
     ?>
+
+
+
+

@@ -34,7 +34,7 @@
     <div class="content">
         <div class="supportView">
             <div class="container">
-                <h1>404 - Page Not Foun</h1>
+                <h1>404 - Page Not Found</h1>
 
                 <p>The page you are looking for might have been removed or doesn't exist.</p>
                 <p>Please check if there are any spelling mistakes in the url.</p>
