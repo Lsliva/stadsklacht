@@ -10,8 +10,6 @@ $_SESSION['passwordPost'] = $POST['password'];
 
 try {
     $servername = "localhost";
-
-    // $servername = "srv12373.hostingserver.nl:3306";
     $dbusername = "root";
     $dbpassword = "";
     $dbname = "stadsklacht";
