@@ -53,43 +53,21 @@ include "assets/nav.php";
         <div class="slider-container">
 
             <div class="detail-box">
-                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                    <span class="sr-only">Next</span>
-                </a>
                 <h1>
-                    DiscoverING <br>
-                    SOMETHING <br>
-                    NEW BRAND
+                    Project <br>
+                    StadsKlacht
                 </h1>
                 <p>
-                    It is a long established fact that a reader will be distracted by the readable content of a page when
-                    looking at its layout. The point of using Lorem
+                  Welkom User, <br> <br>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab asperiores blanditiis debitis, doloribus eius enim fugit in magni maxime
+                    molestiae numquam quos sequi similique temporibus voluptas voluptatibus voluptatum. Fugit, magni?
                 </p>
                 <div>
 
                 </div>
             </div>
-            <div class="img-box">
-                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="images/slider-img.jpg" alt="">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images/slider-img.jpg" alt="">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="images/slider-img.jpg" alt="">
-                        </div>
-                    </div>
 
-                </div>
 
-            </div>
-        </div>
 
     </section>
     <!-- end slider section -->
@@ -106,13 +84,14 @@ include "assets/nav.php";
                     </h6>
                     <div class="custom_heading-container">
                         <h2>
-                            web elements
+                            Gemeente Roffa
                         </h2>
                         <hr>
                     </div>
                     <p>
-                        It is a long established fact that a reader will be distracted by the readable content of a page when
-                        looking at its layout. The point of using Lorem
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, commodi cumque delectus
+                        dignissimos dolorem doloremque impedit iure minima natus nemo,
+                        nesciunt odio perferendis quam sapiente tempore velit voluptatibus! Doloribus, quas!
                     </p>
                     <div>
 
