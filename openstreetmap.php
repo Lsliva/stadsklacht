@@ -20,6 +20,10 @@
         <label for="klachtenId">Enter klachtenId:</label>
         <input type="text" id="klachtenId" name="klachtenId">
         <button type="button" onclick="searchGps()">Search</button>
+        
+        <span id="responseCount"></span>
+        <button type="button" id="previousButton" onclick="showPrevious()">Previous</button>
+        <button type="button" id="nextButton" onclick="showNext()">Next</button>
     </form>
     <div id="map" style="height: 500px;"></div>
 
@@ -27,12 +31,14 @@
     <script>
         var map = L.map('map').setView([51.9225, 4.47917], 11);
 
+        let currentResponseIndex = 0;
+
         // Function to fetch GPS locations based on klachtenId
         function searchGps() {
             var klachtenId = document.getElementById('klachtenId').value;
 
             // Fetch GPS locations from PHP based on the provided klachtenId
-            fetch(`getGps.php?klachtenId=${klachtenId}`)
+            fetch(`searchGps.php?klachtenId=${klachtenId}`)
                 .then(response => response.json())
                 .then(data => {
                     // Clear existing markers on the map
@@ -49,13 +55,106 @@
                             .bindPopup(`Database klacht: ${location.klachtenId}`);
                     });
 
-                    // Center the map on the first GPS location if available
+                    // Update the current response index and count display
+                    currentResponseIndex = 0;
+                    updateCountDisplay(data.length);
+
+                    // Display the map centered on the first GPS location if available
                     if (data.length > 0) {
-                        map.setView([data[0].latitude, data[0].longitude], 11);
+                        map.setView([data[0].latitude, data[0].longitude], 20);
                     }
+
+                    // Show/hide Next button based on the number of responses
+                    toggleNextButton(data.length > 1);
                 })
                 .catch(error => console.error('Error fetching GPS locations:', error));
         }
+
+        function showNext() {
+    // Increment the current response index
+    currentResponseIndex++;
+
+    // Update count display
+    updateCountDisplay();
+
+    // Fetch the data again or use the existing data array
+    var klachtenId = document.getElementById('klachtenId').value;
+    fetch(`searchGps.php?klachtenId=${klachtenId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Display the marker for the current response index
+            if (currentResponseIndex < data.length) {
+                // Clear existing markers on the map
+                map.eachLayer(layer => {
+                    if (layer instanceof L.Marker) {
+                        map.removeLayer(layer);
+                    }
+                });
+
+                // Create marker for the current response index
+                L.marker([data[currentResponseIndex].latitude, data[currentResponseIndex].longitude])
+                    .addTo(map)
+                    .bindPopup(`Database klacht: ${data[currentResponseIndex].klachtenId}`);
+
+                // Center the map on the current GPS location
+                map.setView([data[currentResponseIndex].latitude, data[currentResponseIndex].longitude], 20);
+            }
+
+            // Show/hide Next button based on the index
+            toggleNextButton(currentResponseIndex < data.length);
+        })
+        .catch(error => console.error('Error fetching GPS locations:', error));
+        }
+        function showPrevious() {
+    // Decrement the current response index
+    currentResponseIndex--;
+
+    // Update count display
+    updateCountDisplay();
+
+    // Fetch the data again or use the existing data array
+    var klachtenId = document.getElementById('klachtenId').value;
+    fetch(`searchGps.php?klachtenId=${klachtenId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Display the marker for the current response index
+            if (currentResponseIndex >= 0 && currentResponseIndex < data.length) {
+                // Clear existing markers on the map
+                map.eachLayer(layer => {
+                    if (layer instanceof L.Marker) {
+                        map.removeLayer(layer);
+                    }
+                });
+
+                // Create marker for the current response index
+                L.marker([data[currentResponseIndex].latitude, data[currentResponseIndex].longitude])
+                    .addTo(map)
+                    .bindPopup(`Database klacht: ${data[currentResponseIndex].klachtenId}`);
+
+                // Center the map on the current GPS location
+                map.setView([data[currentResponseIndex].latitude, data[currentResponseIndex].longitude], 20);
+            }
+
+            // Show/hide Next and Previous buttons based on the index
+            toggleNextButton(currentResponseIndex < data.length - 1);
+            togglePreviousButton(currentResponseIndex > 0);
+        })
+        .catch(error => console.error('Error fetching GPS locations:', error));
+}
+
+            function updateCountDisplay(totalResponses) {
+                // Update the count display (assuming you have an element with id "responseCount")
+                document.getElementById('responseCount').textContent = `${currentResponseIndex + 1}/${totalResponses || 0}`;
+            }
+
+            function toggleNextButton(show) {
+                // Show/hide the Next button based on the "show" parameter
+                document.getElementById('nextButton').style.display = show ? 'inline-block' : 'none';
+            }
+            function togglePreviousButton(show) {
+                // Show/hide the Previous button based on the "show" parameter
+                document.getElementById('previousButton').style.display = show ? 'inline-block' : 'none';
+            }
             document.addEventListener('DOMContentLoaded', function () {
 
 

@@ -32,6 +32,9 @@ body {
     border-radius: 20px;
     gap: 1rem;
 }
+#nextButton, #previousButton {
+    display: none;
+}
 /* nav */
 .accountDiv {
     margin: 5px;
