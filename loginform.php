@@ -21,12 +21,12 @@
                 <div class="loginForm">          
                     <form method="post" action="login.php">
                         <div class="labelInput">
-                        <label class="iconField" for="username"><i class='bx bxs-user'></i></label>
-                        <input type="text" id="username" name="username" placeholder="Username" value="<?php echo isset($_SESSION['usernamePost']) ? $_SESSION['usernamePost'] : ''; ?>" required>
+                            <label class="iconField" for="naam"><i class='bx bxs-user'></i></label>
+                            <input type="text" id="naam" name="naam" placeholder="Username" value="<?php echo isset($_SESSION['usernamePost']) ? $_SESSION['usernamePost'] : ''; ?>" required>
                         </div>
                         <div class="labelInput">
-                        <label class="iconField" for="password"><i class='bx bxs-lock-alt' ></i></label>
-                        <input type="password" id="password" name="password" placeholder="Password" value="<?php echo isset($_SESSION['passwordPost']) ? $_SESSION['passwordPost'] : ''; ?>" required>
+                            <label class="iconField" for="wachtwoord"><i class='bx bxs-lock-alt' ></i></label>
+                            <input type="password" id="wachtwoord" name="wachtwoord" placeholder="Password" value="<?php echo isset($_SESSION['passwordPost']) ? $_SESSION['passwordPost'] : ''; ?>" required>
                         </div>
                         <input type="submit" value="Login" class="submitButton">
                         <p class="redirect">New here? <a href="registerForm">Sign up now<i class='bx bxs-right-arrow-alt'></i></a></p>
@@ -49,16 +49,12 @@
         </div>
     </main>
     <style>
-
-
         input {
-             width: 200px;
+            width: 200px;
             padding: 10px 15px;
             margin: 5px 0;
             box-sizing: border-box;
         }
-     
-
     </style>
     <script src="assets/main.js"></script>
 
