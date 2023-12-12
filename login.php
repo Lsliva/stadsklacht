@@ -23,7 +23,7 @@ try {
 
     // Prepare SQL statement
     $stmt = $conn->prepare("SELECT * FROM gebruikers WHERE naam = :naam");
-    $stmt->bindParam(':naam', $naam);
+    $stmt->bindParam(':naam', $username);
 
     // Execute statement
     $stmt->execute();
@@ -32,7 +32,7 @@ try {
     $results = $stmt->fetchAll();
 
     if (!empty($results)) {
-        $hashed_password = $results[0]['password'];
+        $hashed_password = $results[0]['wachtwoord'];
         if (password_verify($password, $hashed_password)) {
             $_SESSION['username'] = $username;
             if (isset($_SESSION['return_to'])) {
