@@ -1,6 +1,42 @@
 <?php
+
 include "assets/nav.php";
+
+// Check if a session is already active
+if (session_status() == PHP_SESSION_NONE) {
+    // Start a new session if one is not already active
+    session_start();
+}
+
+// Include your database connection script.
+include("database/conn.php");
+
+if (isset($_SESSION['ID'])) {
+    // User is logged in. You can retrieve and display their information here.
+    $user_id = $_SESSION['ID'];
+
+    try {
+        // Prepare a SQL query to fetch the user's information
+        $query = "SELECT naam FROM gebruikers WHERE ID = :user_id";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // Check if the query was successful
+        if ($stmt->rowCount() > 0) {
+            $user_data = $stmt->fetch(PDO::FETCH_ASSOC);
+            $username = $user_data['naam'];
+            echo "Logged in as: " . $username;
+        } else {
+            echo "User not found in the database.";
+        }
+    } catch (PDOException $e) {
+        // Handle any exceptions that occur during the query execution
+        echo "Error: " . $e->getMessage();
+    }
+}
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
