@@ -42,4 +42,17 @@ class Gps {
         echo json_encode($results);
     }
 
+    // get gps with klantId for search function
+    public function getGpsByKlachtenId($klachtenId) {
+        require 'database/conn.php';
+
+        $statement = $conn->prepare("SELECT latitude, longitude, klachtenId, timestamp FROM gps WHERE klachtenId = :klachtenId");
+        $statement->bindParam(':klachtenId', $klachtenId, PDO::PARAM_INT);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return json_encode($results);
+
+    }
 }
+
