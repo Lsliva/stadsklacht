@@ -32,7 +32,7 @@ require 'database/database.php';
     </div>
 
 <nav class="navbar navbar-expand-lg custom_nav-container ">
-    <a class="navbar-brand" href="../route.php">
+    <a class="navbar-brand" href="./">
         <img src="images/logo.png" alt="">
         <span>Stadsklacht</span>
     </a>
@@ -45,19 +45,10 @@ require 'database/database.php';
         <div class="d-flex mx-auto flex-column flex-lg-row align-items-center">
             <ul class="navbar-nav  ">
                 <li class="nav-item active">
-                    <a class="nav-link" href="../route.php">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="./">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="openstreetmap">map</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../route.php"> </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../route.php"> </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../route.php"></a>
                 </li>
             </ul>
         </div>
@@ -67,9 +58,8 @@ require 'database/database.php';
         </div>
     </div>
     <?php if(isset($_SESSION['username'])): ?>
-        <div class="username"><?php echo $_SESSION['username']; ?></div></a>
+        <a href="account"><div class="username"><?php echo $_SESSION['username']; ?></div></a>
         <div class="accountDiv">
-            <li><a href="account">Account</a></li>
             <li><a id="logoutBtn" href="logout"><i class='bx bx-log-out'></i>Logout</a></li>
 
         </div>

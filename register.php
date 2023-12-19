@@ -1,10 +1,10 @@
 <?php
 session_start();
-$naam = $_POST['username']; // Aangepast naar 'naam'
+$naam = $_POST['username']; 
 $email = $_POST['email'];
-$wachtwoord = $_POST['password']; // Aangepast naar 'wachtwoord'
+$wachtwoord = $_POST['password'];
 
-$_SESSION['usernamePost'] = $naam; // Aangepast naar 'naam'
+$_SESSION['usernamePost'] = $naam;
 $_SESSION['emailPost'] = $email;
 $_SESSION['passwordPost'] = $_POST['password'];
 
