@@ -32,6 +32,41 @@ body {
     border-radius: 20px;
     gap: 1rem;
 }
+
+/* Reset all styling for the button */
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+#klachtImgPopover {
+  text-align: center;
+  padding: 2px;
+  border-radius: 10px;
+  height: auto;
+  max-height: 75%;
+  margin-top: 120px;
+  margin-bottom: 5%;
+  margin-left: 20%;
+  margin-right: 15%;
+  max-width: 60%;
+  height: 80%;
+}
+
+#updateklacht {
+  text-align: center;
+  top: 50px;
+  left: 300px;
+  padding: 20px;
+  border-radius: 10px;
+}
+
 #nextButton, #previousButton {
     display: none;
 }
@@ -524,6 +559,7 @@ li {
   }
 }
 
+
 @media screen and (max-width: 992px) {
   .content {
     margin-left: 12%;
@@ -540,6 +576,11 @@ li {
   .content {
     margin-left: 8%;
     margin-right: 8%;
+  }
+  #klachtImgPopover {
+    margin-left: 6%;
+    max-width: 88%;
+
   }
 }
 

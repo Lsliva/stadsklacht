@@ -10,6 +10,7 @@ require 'database/database.php';
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
     <!-- Site Metas -->
     <meta name="keywords" content="" />
     <meta name="description" content="" />
@@ -22,6 +23,7 @@ require 'database/database.php';
     <link rel="stylesheet" href="assets/style.scss">
     <link rel="stylesheet" href="assets/style1.css">
     <link rel="stylesheet" href="assets/style.css">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 
 
 </head>

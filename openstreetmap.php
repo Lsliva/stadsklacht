@@ -26,8 +26,9 @@
             <span id="responseCount"></span>
             <button type="button" id="previousButton" onclick="showPrevious()">Previous</button>
             <button type="button" id="nextButton" onclick="showNext()">Next</button>
+            
         </form>
-        <div id="map" style="height: 500px;"></div>
+                <div id="map" style="height: 500px;"></div>
 
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
         <script>
@@ -287,25 +288,65 @@
                         let status;
                         let picture;
                         data.forEach(location => {
-                            if (location.status === null || locations.status === 0) {
+                            if (location.status === null) {
                                 status = 'not fixed';
-                            } else if (location.status == 1) {
-                                status = 'fixed';
-                            } else {
-                                status = 'status issue';
+                                statusEdit = `
+                                <select id="status" name="status" required>
+                                <option value="status">${status}</option>
+                                <option value="status">Fixed</option>
+                                <option value="status">In progress</option>
+                                </select>`;
+                            } else if (location.status == 'fixed') {
+                                status = location.status;
+                                statusEdit = location.status;
+                            } else if(location.status == 'In progress'){ 
+                                status = location.status;
+                                statusEdit = `
+                                <select id="status" name="status" required>
+                                <option value="status">${status}</option>
+                                <option value="status">Fixed</option>
+                                </select>`; 
+                            }else {
+                                status = 'Issue found';
                             };
-                            if (location.pictureUrl) {
-                                picture = `<img src="${location.pictureUrl}" alt="Picture" width="100">`;
-                            } else if (!location.pictureUrl) {
+                            if (location.foto) {
+                                picture = `<button popovertarget="klachtImgPopover"><img src="${location.foto}" alt="Picture" width="100"></button>
+                                <div id="klachtImgPopover" popover><img src="${location.foto}" alt="Picture" ></div>
+
+                                `;
+
+                            } else if (!location.foto) {
                                 picture = 'No picture available';
                             };
-
                             var popupContent = `
                             ${location.naam} <br>
                             ${location.email} <br>
                             <strong>Omschrijving:</strong> ${location.omschrijving} <br>
                             ${picture} <br>
-                            ${location.timestamp} ${status}<br>`;
+                            ${location.timestamp} | ${status} | 
+                            <button popovertarget="updateklacht"><box-icon size="xs" name='edit-alt'></box-icon><button><br>
+                            <div id="updateklacht" popover>
+                            <form method="POST" action="updateKlacht.php">
+                            <input type="hidden" name="gebruikersId" value="${location.gebruikersId}">
+                            <input type="hidden" name="klachtenId" value="${location.klachtenId}">
+                            <label>Naam:</label>
+                            <input type="text" name="usernameKlant" value="${location.naam}"><br>
+                            <label>Email:</label>
+                            <input type="email" name="email" value="${location.email}"><br>
+                            <label>Omschrijving:</label>
+                            <input type="text" name="omschrijving" value="${location.omschrijving}"><br>
+                            <label>Status:</label>
+                            ${statusEdit}
+                            <br>
+                            <label>Timestamp:</label>
+                            ${location.timestamp}
+                            <div class="deleteButton"><a href="deleteKlacht.php?action=delete&klachtenId='${klachtenId}">Delete<box-icon size="sm" type='solid' name='trash'></box-icon></a></div>
+                            <div class="formEnd">
+                                <input type="submit" value="Submit">                      
+                                <p><a id="cancel" href="menuKlant">Cancel</a></p>
+                            </div>
+                        </form>                            </div>
+                            `;
                             L.marker([location.latitude, location.longitude])
                                 .addTo(map)
                                 .bindPopup(popupContent);
