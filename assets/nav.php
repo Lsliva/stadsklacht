@@ -1,5 +1,8 @@
+<?php
+require 'database/database.php';
+?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <!-- Basic -->
@@ -7,6 +10,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- Mobile Metas -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    
     <!-- Site Metas -->
     <meta name="keywords" content="" />
     <meta name="description" content="" />
@@ -19,6 +23,7 @@
     <link rel="stylesheet" href="assets/style.scss">
     <link rel="stylesheet" href="assets/style1.css">
     <link rel="stylesheet" href="assets/style.css">
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
 
 
 </head>
@@ -29,7 +34,7 @@
     </div>
 
 <nav class="navbar navbar-expand-lg custom_nav-container ">
-    <a class="navbar-brand" href="../route.php">
+    <a class="navbar-brand" href="./">
         <img src="images/logo.png" alt="">
         <span>Stadsklacht</span>
     </a>
@@ -42,35 +47,31 @@
         <div class="d-flex mx-auto flex-column flex-lg-row align-items-center">
             <ul class="navbar-nav  ">
                 <li class="nav-item active">
-                    <a class="nav-link" href="../route.php">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="./">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="../route.php">About </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../route.php">Services </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../route.php"> news </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../route.php">Contact us</a>
+                    <a class="nav-link" href="openstreetmap">map</a>
                 </li>
             </ul>
         </div>
         <div class="quote_btn-container  d-flex justify-content-center">
-            <a href="">
-                <img src="images/call.png" alt="">
-                CALL : +01 1234567890
-            </a>
-            <a href="">
-                <span>
-                  @
-                </span>
-                demo@gmail.com
-            </a>
+
+
         </div>
     </div>
+    <?php if(isset($_SESSION['username'])): ?>
+        <a href="account"><div class="username"><?php echo $_SESSION['username']; ?></div></a>
+        <div class="accountDiv">
+            <li><a id="logoutBtn" href="logout"><i class='bx bx-log-out'></i>Logout</a></li>
+
+        </div>
+    <?php else: ?>
+        <div class="Hlogin">
+            <li><a class="Hlogin" href="loginForm">Login</a></li>
+            <li><a class="Hlogin" href="registerForm">Register</a></li>
+        </div>
+    <?php endif; ?>
+
 </nav>
 </header>
 </body>
