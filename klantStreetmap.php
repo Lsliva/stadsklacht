@@ -17,6 +17,8 @@
             
 
             <div class="loginView">  
+                <h2>Choose location of your complaint:</h2>
+                <p>Please choose a location as precise as possible.</p>
                 <div id="map" style="height: 500px;"></div>
 
             </div>

@@ -53,7 +53,7 @@ require 'database/database.php';
                     <a class="nav-link" href="openstreetmap">map</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="klachtenForm">klacht</a>
+                    <a class="nav-link" href="klantStreetmap">+ complaint</a>
                 </li>
             </ul>
         </div>
