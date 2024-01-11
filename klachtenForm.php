@@ -28,6 +28,29 @@
                             <label class="iconField" for="wachtwoord"><i class='bx bxs-lock-alt' ></i></label>
                             <input type="password" id="wachtwoord" name="wachtwoord" placeholder="Password" value="<?php echo isset($_SESSION['passwordPost']) ? $_SESSION['passwordPost'] : ''; ?>" required>
                         </div>
+
+                        <label for="locationType">Choose a location:</label>
+                        <div id="chooseLocationDiv">
+                            <label for="Current location">Current Location:</label>
+                            <input type="text" id="locationCord" name="locationCord" readonly>
+                            <input type="text" id="locationName" name="locationName" readonly>
+                            <br>
+                            <?php 
+                            // Retrieve location details from session
+                            $location = isset($_SESSION['chosenLocation']) ? $_SESSION['chosenLocation'] : null;
+                            $address = isset($_SESSION['chosenAddress']) ? $_SESSION['chosenAddress'] : '';
+
+                            if (!empty($location) && !empty($address)) : 
+                                ?>
+                                <label for="Chosen location">Chosen Location:</label>
+                                <input type="text" id="chosenLocationCord" name="chosenLocationCord" value="<?php echo "{$location['lat']},{$location['lon']}"; ?>" readonly>
+                                <?php echo $address; ?>
+                                <input type="hidden" id="chosenLocationName" name="chosenLocationName" value="<?php echo $address; ?>">
+
+                            <?php else : ?>
+                                <p>Location has yet to be chosen: <a href="klantStreetmap">Choose a location</a></p>
+                            <?php endif; ?>
+                        </div>
                         <input type="submit" value="Login" class="submitButton">
                         <p class="redirect">New here? <a href="registerForm">Sign up now<i class='bx bxs-right-arrow-alt'></i></a></p>
                         
@@ -56,7 +79,8 @@
             box-sizing: border-box;
         }
     </style>
-    <script src="assets/main.js"></script>
+
+    <script src="assets/klachten.js"></script>
 
 </body>
 </html>

@@ -56,7 +56,6 @@
             box-sizing: border-box;
         }
     </style>
-    <script src="assets/main.js"></script>
 
 </body>
 </html>

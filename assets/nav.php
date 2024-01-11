@@ -52,6 +52,9 @@ require 'database/database.php';
                 <li class="nav-item">
                     <a class="nav-link" href="openstreetmap">map</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="klachtenForm">klacht</a>
+                </li>
             </ul>
         </div>
         <div class="quote_btn-container  d-flex justify-content-center">
