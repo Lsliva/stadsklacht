@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
 </head>
 
 <body>
@@ -59,11 +60,15 @@
             
             // Function to generate popup content
             function generatePopupContent(location) {
+             
                 let status;
                 let picture;
                 let statusEdit;
-
-                if (location.status === null) {
+                let address = location.locationName;
+                if (!location.locationName) {
+                    address = location.longitude + ' | ' + location.latitude;
+                }
+                 if (location.status === null) {
                     status = 'not fixed';
                     statusEdit = `
                         <select id="status" name="status" required>
@@ -94,8 +99,11 @@
                     ${location.email} <br>
                     <strong>Omschrijving:</strong> ${location.omschrijving} <br>
                     ${picture} <br>
-                    ${location.timestamp} | ${status} | 
-                    <button popovertarget="updateklacht"><box-icon size="xs" name='edit-alt'></box-icon><button><br>
+                    ${location.timestamp} | ${status} | <br>
+                    ${address} 
+
+                    | <button popovertarget="updateklacht"><box-icon size="xs" name='edit-alt'></box-icon><button><br>
+                    
                     <div id="updateklacht" popover>
                         <form method="POST" action="updateKlacht.php">
                             <input type="hidden" name="gebruikersId" value="${location.gebruikersId}">

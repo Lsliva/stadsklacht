@@ -64,7 +64,7 @@ class Gps {
     public function getGps() {
         require 'database/conn.php';
 
-        $statement = $conn->prepare("SELECT latitude, longitude, klachtenId, timestamp FROM gps");
+        $statement = $conn->prepare("SELECT locationName, latitude, longitude, klachtenId, timestamp FROM gps");
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
