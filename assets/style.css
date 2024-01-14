@@ -551,6 +551,21 @@ li {
   height: 20px;
 } */
 
+
+/* popup message api */
+.my-swal-popup {
+
+}
+
+.my-swal-title {
+  padding: 10px;
+  margin: 10px;
+}
+
+.my-swal-container {
+
+}
+
 /* media query */
 
 @media screen and (max-width: 1440px) {

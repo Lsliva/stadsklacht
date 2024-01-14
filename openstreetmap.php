@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
 </head>
 
 <body>
@@ -31,6 +32,7 @@
                 <div id="map" style="height: 500px;"></div>
 
         <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <script src="assets/openstreetmap.js"></script>
         <script>
             console.log('%cSup', `
                 text-align: center;
@@ -52,33 +54,21 @@
                 left: 50%;
                 transform: translate(-50%, -50%);
             `);
-
-            // Define the bounds for Rotterdam
-            var rotterdamBounds = L.latLngBounds(
-                L.latLng(51.855, 4.25), // Southwestern point
-                L.latLng(51.975, 4.65)  // Northeastern point
-            );
-
-            // var map = L.map('map').setView([51.9225, 4.47917], 11);
-            var map = L.map('map', {
-                center: [51.9225, 4.47917],
-                zoom: 11,
-                maxZoom: 18,
-                minZoom: 11,
-                maxBounds: rotterdamBounds,
-                maxBoundsViscosity: .1     // Apply some stickiness to the bounds
-            });
             
             let currentResponseIndex = 0;
             let totalResponses = 0; // Variable to store the total number of responses
             
             // Function to generate popup content
             function generatePopupContent(location) {
+             
                 let status;
                 let picture;
                 let statusEdit;
-
-                if (location.status === null) {
+                let address = location.locationName;
+                if (!location.locationName) {
+                    address = location.longitude + ' | ' + location.latitude;
+                }
+                 if (location.status === null) {
                     status = 'not fixed';
                     statusEdit = `
                         <select id="status" name="status" required>
@@ -109,8 +99,11 @@
                     ${location.email} <br>
                     <strong>Omschrijving:</strong> ${location.omschrijving} <br>
                     ${picture} <br>
-                    ${location.timestamp} | ${status} | 
-                    <button popovertarget="updateklacht"><box-icon size="xs" name='edit-alt'></box-icon><button><br>
+                    ${location.timestamp} | ${status} | <br>
+                    ${address} 
+
+                    | <button popovertarget="updateklacht"><box-icon size="xs" name='edit-alt'></box-icon><button><br>
+                    
                     <div id="updateklacht" popover>
                         <form method="POST" action="updateKlacht.php">
                             <input type="hidden" name="gebruikersId" value="${location.gebruikersId}">
@@ -286,7 +279,7 @@
                     // Show/hide the Previous button based on the "show" parameter
                     document.getElementById('previousButton').style.display = show ? 'inline-block' : 'none';
                 }
-                document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function () {
 
 
                     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
