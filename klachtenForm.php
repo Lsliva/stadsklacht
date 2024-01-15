@@ -18,7 +18,7 @@
             <div class="loginView">  
             <h2>Klachten .Form</h2>  
 
-                <div class="loginForm">          
+                <div class="loginForm">
                     <form method="post" action="login.php">
                         <div class="labelInput">
                             <label class="iconField" for="naam"><i class='bx bxs-user'></i></label>
@@ -51,9 +51,9 @@
                                 <p>Location has yet to be chosen: <a href="klantStreetmap">Choose a location</a></p>
                             <?php endif; ?>
                         </div>
-                        <input type="submit" value="Login" class="submitButton">
+                        <input type="submit" value="Submit" class="submitButton">
                         <p class="redirect">New here? <a href="registerForm">Sign up now<i class='bx bxs-right-arrow-alt'></i></a></p>
-                        
+
                     </form> 
                     <div class="messagePHP"><?php
                         if (isset($_SESSION['message'])) {
