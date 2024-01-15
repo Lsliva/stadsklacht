@@ -1,8 +1,8 @@
 <?php
-session_start();
+
 
 // Connection details
-$host = "localhost:3306";
+$host = "localhost";
 $dbname = "stadsklacht";
 $username = "root";
 $password = "";

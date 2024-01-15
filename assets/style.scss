@@ -821,3 +821,34 @@ a:focus {
 }
 
 /* end footer section*/
+
+.readCenter{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.readContent{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.readCreate {
+  box-shadow: 10px 10px 50px rgb(0, 0, 0);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 1300px;
+  height: 700px;
+  padding: 10px;
+  background: #1e025b;
+  margin: 40px;
+}
+.center{
+  text-align: center;
+}
+
+a{
+  color: blue;
+}
