@@ -16,16 +16,36 @@ class Gps {
         $this->longitude = $longitude;
     }
 
-    public function sendGps($klachtenId, $latitude, $longitude) {
+    // create gps location and return the primairy key
+    public function sendGps($locationName, $latitude, $longitude) {
         require 'database/conn.php';
 
-        $statement = $conn->prepare("INSERT INTO gps (latitude, longitude, klachtenId) VALUES (:latitude, :longitude, :klachtenId)");
-        // $statement->bindParam(':userId', $userId);
+        $statement = $conn->prepare("INSERT INTO gps (locationName, latitude, longitude) VALUES (:locationName, :latitude, :longitude)");
+        $statement->bindParam(':locationName', $locationName);
         $statement->bindParam(':latitude', $latitude);
         $statement->bindParam(':longitude', $longitude);
-        $statement->bindParam(':klachtenId', $klachtenId);
         $statement->execute();
 
+        // Check if the execution was successful
+        if ($statement->rowCount() > 0) {
+            $last_id = $conn->lastInsertId();
+            // echo $last_id;
+            return $last_id;
+        } else {
+            echo "Error: " . $statement->errorInfo()[2]; // Get the detailed error message
+        }
+
+    }
+
+    // create a linking table for the new complaint with its gps
+    public function createLinkTable($locationName, $latitude, $longitude) {
+        require 'database/conn.php';
+        // create the gps location and return the primairy key
+        $gpsId = $this->sendGps($locationName, $latitude, $longitude);
+        // create klacht and return the primairy key
+        require_once 'Classes/Klacht.php';
+        $klachtClass = new Klacht;
+        $klachtId = $klachtClass->createKlacht($omschrijving, $gebruikersId);
     }
 
     // get gps with klantId for search function

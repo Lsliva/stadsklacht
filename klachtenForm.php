@@ -29,7 +29,14 @@
                             <input type="password" id="wachtwoord" name="wachtwoord" placeholder="Password" value="<?php echo isset($_SESSION['passwordPost']) ? $_SESSION['passwordPost'] : ''; ?>" required>
                         </div>
 
-                        <label for="locationType">Choose a location:</label>
+                        <input type="submit" value="send" class="submitButton">
+
+                        <p class="redirect">New here? <a href="registerForm">Sign up now<i class='bx bxs-right-arrow-alt'></i></a></p>
+                        
+                    </form> 
+                    <!-- deze form moet je laten staan en voor nu negeren rensie -->
+                    <form method="post" action="sendLocation.php">
+                    <label for="locationType">Choose a location:</label>
                         <div id="chooseLocationDiv">
                             <label for="Current location">Current Location:</label>
                             <input type="text" id="locationCord" name="locationCord" readonly>
@@ -43,7 +50,8 @@
                             if (!empty($location) && !empty($address)) : 
                                 ?>
                                 <label for="Chosen location">Chosen Location:</label>
-                                <input type="text" id="chosenLocationCord" name="chosenLocationCord" value="<?php echo "{$location['lat']},{$location['lon']}"; ?>" readonly>
+                                <input type="text" id="chosenLocationCord" name="chosenLocationLat" value="<?php echo "{$location['lat']}"; ?>" readonly>
+                                <input type="text" id="chosenLocationCord" name="chosenLocationLon" value="<?php echo "{$location['lon']}"; ?>" readonly>
                                 <?php echo $address; ?>
                                 <input type="hidden" id="chosenLocationName" name="chosenLocationName" value="<?php echo $address; ?>">
 
@@ -51,10 +59,9 @@
                                 <p>Location has yet to be chosen: <a href="klantStreetmap">Choose a location</a></p>
                             <?php endif; ?>
                         </div>
-                        <input type="submit" value="Login" class="submitButton">
-                        <p class="redirect">New here? <a href="registerForm">Sign up now<i class='bx bxs-right-arrow-alt'></i></a></p>
-                        
+                        <input type="submit" value="send GPS" class="submitButton">
                     </form> 
+
                     <div class="messagePHP"><?php
                         if (isset($_SESSION['message'])) {
                             echo $_SESSION['message'];

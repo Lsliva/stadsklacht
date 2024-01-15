@@ -286,19 +286,19 @@
                         attribution: '© OpenStreetMap contributors'
                     }).addTo(map);
 
-                    // Function to add a new marker on map click
-                    function onMapClick(e) {
-                        var popupMessage = prompt("Enter the information for the new marker:");
+                    // // Function to add a new marker on map click
+                    // function onMapClick(e) {
+                    //     var popupMessage = prompt("Enter the information for the new marker:");
 
-                        if (popupMessage) {
-                            var newMarker = L.marker(e.latlng).addTo(map)
-                                .bindPopup(popupMessage);
-                            sendDataToPHP(e);
-                        }
-                    }
+                    //     if (popupMessage) {
+                    //         var newMarker = L.marker(e.latlng).addTo(map)
+                    //             .bindPopup(popupMessage);
+                    //         sendDataToPHP(e);
+                    //     }
+                    // }
 
-                    // Add click event listener to the map
-                    map.on('click', onMapClick);
+                    // // Add click event listener to the map
+                    // map.on('click', onMapClick);
 
                     // Get user's location using Geolocation API
                     if (navigator.geolocation) {
