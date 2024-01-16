@@ -51,8 +51,13 @@
                                 <p>Location has yet to be chosen: <a href="klantStreetmap">Choose a location</a></p>
                             <?php endif; ?>
                         </div>
+                        <div>
+                        <label for="Klachten">Omschrijving</label>
+                        <input type="text" class="omschrijving"> <br>
                         <input type="submit" value="Submit" class="submitButton">
+                        </div>
                         <p class="redirect">New here? <a href="registerForm">Sign up now<i class='bx bxs-right-arrow-alt'></i></a></p>
+
 
                     </form> 
                     <div class="messagePHP"><?php
