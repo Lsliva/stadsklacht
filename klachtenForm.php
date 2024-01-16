@@ -10,6 +10,7 @@
 
 </head>
 <body>
+<?php require_once 'inlogCheck.php'?>
     <?php include("assets/nav.php"); ?>
     <main>
         <div class="content">
@@ -46,7 +47,6 @@
                             // Retrieve location details from session
                             $location = isset($_SESSION['chosenLocation']) ? $_SESSION['chosenLocation'] : null;
                             $address = isset($_SESSION['chosenAddress']) ? $_SESSION['chosenAddress'] : '';
-
                             if (!empty($location) && !empty($address)) : 
                                 ?>
                                 <label for="Chosen location">Chosen Location:</label>

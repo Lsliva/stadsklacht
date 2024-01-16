@@ -110,7 +110,7 @@ class Klacht
     // methods specific to handling complaints
     public function createKlacht()
     {
-        require "conn.php";
+        require "database/conn.php";
 
         $omschrijving = $this->get_omschrijving();
         $gpsId = $this->get_gpsId();
@@ -132,7 +132,7 @@ class Klacht
 
     public function readKlacht()
     {
-        require 'database/database.php';
+        require 'database/conn.php';
 
         
     if (isset($_GET['delete'])) {
@@ -172,7 +172,7 @@ class Klacht
 
     public function updateKlacht($klachtId)
     {
-        require 'conn.php';
+        require 'database/conn.php';
 
         $omschrijving = $this->get_omschrijving();
         $gpsId = $this->get_gpsId();

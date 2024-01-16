@@ -1,8 +1,13 @@
 <?php
+require_once 'inlogCheck.php';
 
-include("assets/nav.php");
-
+session_start();
+    if ($_SESSION['rights'] !== 'management' && $_SESSION['rights'] !== 'admin'){ 
+        header("Location: restrictedContent");            
+        } else {  
+            session_abort();
 ?>
+<?php include("assets/nav.php");?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,7 +32,6 @@ include("Classes/Klacht.php");
 
     </div>
 </div>
-
-
+<?php } ?>
 </body>
 </html>

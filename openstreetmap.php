@@ -15,9 +15,16 @@
             max-width: 1000px;
         } */
     </style>
-    <?php
-    include 'assets/nav.php';
-    ?>
+<?php
+require_once 'inlogCheck.php';
+
+session_start();
+    if ($_SESSION['rights'] !== 'management' && $_SESSION['rights'] !== 'admin'){ 
+        header("Location: restrictedContent");            
+        } else {  
+            session_abort();
+?>
+<?php include 'assets/nav.php';?>
     <div class="content">
         <form id="gpsSearchForm">
             <label for="klachtenId">Enter klachtenId:</label>
@@ -377,6 +384,7 @@
             });
         </script>
     </div>
+    <?php } ?>
 </body>
 
 </html>

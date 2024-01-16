@@ -11,6 +11,7 @@
 
 </head>
 <body>
+<?php require_once 'inlogCheck.php'?>
     <?php include("assets/nav.php"); ?>
     <main>
         <div class="content">

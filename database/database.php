@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 
 // Connection details
 $host = "localhost";
