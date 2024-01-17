@@ -39,7 +39,7 @@ try {
             $klantId = $klantIdSession->getKlantIdSession($_SESSION['username']);
             // echo "<pre> test " . print_r($klantId, true) . "</pre>";
             if ($klantId !== null) {
-                $_SESSION['gebruikerId'] = $klantId; // Use 'gebruikerId' consistently
+                $_SESSION['gebruikerId'] = (int)$klantId; // Use 'gebruikerId' consistently
                 // echo "<pre> test " . print_r($klantId, true) . "</pre>";
                 if (isset($_SESSION['return_to'])) {
                     $return_to = $_SESSION['return_to'];

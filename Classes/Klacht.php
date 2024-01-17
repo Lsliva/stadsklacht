@@ -190,15 +190,13 @@ class Klacht
             echo "Fout bij het bijwerken van de klacht: " . mysqli_error($con);
         }
     }
-    public function createKlachten($gebruikerID, $omschrijving)
+    public function createKlachten($omschrijving, $gebruikersId)
     {
-        require 'database/database.php';
-
-        $sql = $conn->prepare('INSERT INTO klachten (gebruikersId, omschrijving) VALUES (:gebruikerID, :omschrijving )');
-        $sql->bindParam(':gebruikerID', $gebruikerID);
+        require 'database/conn.php';
+        // $gebruikersId = (int)$gebruikersId;
+        $sql = $conn->prepare('INSERT INTO klachten (omschrijving, gebruikersId) VALUES :omschrijving, :gebruikersId )');
         $sql->bindParam(':omschrijving', $omschrijving);
-
-
+        $sql->bindParam(':gebruikersId', $gebruikersId);
         $sql->execute();
 
         // Check if the execution was successful
@@ -210,6 +208,8 @@ class Klacht
             echo "Error: " . $sql->errorInfo()[2]; // Get the detailed error message
         }
     }
+
+
     public function getKlantIdSession($qqleq) {
 
         require_once 'database/conn.php';

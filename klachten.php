@@ -19,7 +19,7 @@ if (isset($_POST)) {
 
     // If all validation checks pass, insert the new user into the database
     $Klacht = new Klacht();
-    $Klacht->createKlachten($gebruikerId, $omschrijving);
+    $Klacht->createKlachten($omschrijving, $gebruikerId);
 
 
 }

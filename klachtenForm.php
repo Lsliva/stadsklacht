@@ -19,26 +19,15 @@
 </style>
 <?php require_once 'inlogCheck.php'?>
     <?php include("assets/nav.php"); ?>
-<?php $gebruikerId = $_SESSION['gebruikerId'];?>
+<?php $gebruikerId = intval($_SESSION['gebruikerId']);?>
     <main>
         <div class="content">
-            <form method="post" action="klachten.php">
+            <form method="post" action="createKlacht.php">
                 <label for="omschrijving">Omschrijving</label>
                 <input type="text" name="omschrijving" required>
                 <input type="hidden" id="gebruikersId" name="gebruikersId" value="<?php echo $gebruikerId; ?>">
                 <br>
-                <input type="submit" value="Submit">
-            </form>
-
-            <div class="loginView">
-                    <!-- deze form moet je laten staan en voor nu negeren rensie -->
-                    <form method="post" action="sendLocation.php">
-                    <label for="locationType">Choose a location:</label>
                         <div id="chooseLocationDiv">
-                            <label for="Current location">Current Location:</label>
-                            <input type="text" id="locationCord" name="locationCord" readonly>
-                            <input type="text" id="locationName" name="locationName" readonly>
-                            <br>
                             <?php 
                             // Retrieve location details from session
                             $location = isset($_SESSION['chosenLocation']) ? $_SESSION['chosenLocation'] : null;
@@ -55,7 +44,7 @@
                                 <p>Location has yet to be chosen: <a href="klantStreetmap">Choose a location</a></p>
                             <?php endif; ?>
                         </div>
-                        <input type="submit" value="send GPS" class="submitButton">
+                        <input type="submit" value="send complaint" class="submitButton">
                     </form> 
 
                     <div class="messagePHP"><?php

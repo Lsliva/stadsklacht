@@ -37,17 +37,6 @@ class Gps {
 
     }
 
-    // create a linking table for the new complaint with its gps
-    public function createLinkTable($locationName, $latitude, $longitude) {
-        require 'database/conn.php';
-        // create the gps location and return the primairy key
-        $gpsId = $this->sendGps($locationName, $latitude, $longitude);
-        // create klacht and return the primairy key
-        require_once 'Classes/Klacht.php';
-        $klachtClass = new Klacht;
-        $klachtId = $klachtClass->createKlacht($omschrijving, $gebruikersId);
-    }
-
     // get gps with klantId for search function
     public function getGpsByKlachtenId($klachtenId) {
         require 'database/conn.php';
