@@ -108,25 +108,22 @@ class Klacht
     }
 
     // methods specific to handling complaints
-    public function createKlacht()
+    public function createKlachten($omschrijving, $gebruikersId)
     {
-        require "database/conn.php";
+        require 'database/conn.php';
+        // $gebruikersId = (int)$gebruikersId;
+        $sql = $conn->prepare('INSERT INTO klachten (omschrijving, gebruikersId) VALUES (:omschrijving, :gebruikersId)');
+        $sql->bindParam(':omschrijving', $omschrijving);
+        $sql->bindParam(':gebruikersId', $gebruikersId);
+        $sql->execute();
 
-        $omschrijving = $this->get_omschrijving();
-        $gpsId = $this->get_gpsId();
-        $foto = $this->get_foto();
-        $klantId = $this->get_klantId();
-        $status = $this->get_status();
-        $timestamp = $this->get_timestamp();
-        $gebruikersId = $this->get_gebruikersId();
-
-        $sql = "INSERT INTO klachten (omschrijving, gpsId, foto, klantId, status, timestamp, gebruikersId)
-                VALUES ('$omschrijving', '$gpsId', '$foto', '$klantId', '$status', '$timestamp', '$gebruikersId')";
-
-        if (mysqli_query($con, $sql)) {
-            echo "<p class='klachtMaded'>Klacht succesvol aangemaakt!</p>";
+        // Check if the execution was successful
+        if ($sql->rowCount() > 0) {
+            $last_id = $conn->lastInsertId();
+            // echo $last_id;
+            return $last_id;
         } else {
-            echo "Fout bij het aanmaken van de klacht: " . mysqli_error($con);
+            echo "Error: " . $sql->errorInfo()[2]; // Get the detailed error message
         }
     }
 
@@ -188,24 +185,6 @@ class Klacht
             echo "<p class='klachtUpdated'>Klacht succesvol bijgewerkt!</p>";
         } else {
             echo "Fout bij het bijwerken van de klacht: " . mysqli_error($con);
-        }
-    }
-    public function createKlachten($omschrijving, $gebruikersId)
-    {
-        require 'database/conn.php';
-        // $gebruikersId = (int)$gebruikersId;
-        $sql = $conn->prepare('INSERT INTO klachten (omschrijving, gebruikersId) VALUES :omschrijving, :gebruikersId )');
-        $sql->bindParam(':omschrijving', $omschrijving);
-        $sql->bindParam(':gebruikersId', $gebruikersId);
-        $sql->execute();
-
-        // Check if the execution was successful
-        if ($sql->rowCount() > 0) {
-            $last_id = $conn->lastInsertId();
-            // echo $last_id;
-            return $last_id;
-        } else {
-            echo "Error: " . $sql->errorInfo()[2]; // Get the detailed error message
         }
     }
 

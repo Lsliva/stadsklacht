@@ -31,28 +31,61 @@ class Linkingtable {
         $statement->bindParam(':gpsId', $gpsId);
 
         $statement->execute();
+        // Check if the execution was successful
+        if ($statement->rowCount() > 0) {
+            $last_id = $conn->lastInsertId();
+
+        // Update gps table with linkId
+        $sqlGps = $conn->prepare("UPDATE gps SET linkId = :linkId WHERE id = :gpsId");
+        $sqlGps->bindParam(':linkId', $last_id);
+        $sqlGps->bindParam(':gpsId', $gpsId);
+        $sqlGps->execute();
+    
+        // Update klachten table with linkId
+        $sqlKlacht = $conn->prepare("UPDATE klachten SET linkId = :linkId WHERE id = :klachtenId");
+        $sqlKlacht->bindParam(':linkId', $last_id);
+        $sqlKlacht->bindParam(':klachtenId', $klachtId);
+        $sqlKlacht->execute();
+        } else {
+            echo "Error: " . $statement->errorInfo()[2]; // Get the detailed error message
+        }
+        
 
         $_SESSION['message'] = 'Complaint sent successfully!';
         header("Location: klachtenread");
     }
     
-    // get the other id from the linking table using either klachtenId or gpsId
-    public function linkingTableOtherId($givenId, $columnName) {
+    // get the needed id from the linking table using linkId
+    // public function getIdWithLinkId($linkId, $columnName) {
+    //     require 'database/conn.php';
+    //     $query = "SELECT $columnName FROM linkingtable WHERE ID = :linkId";
+    //     $stmt = $this->pdo->prepare($query);
+    //     $stmt->bindParam(':linkId', $linkId, PDO::PARAM_INT);
+    //     $stmt->execute();
+
+    //     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    //     if (!$result) {
+    //         return null; // ID not found
+    //     }
+    // }
+
+    // get corresponding linkId using either klachtenId or gpsId
+    public function getLinkId($givenId, $columnName) {
         require 'database/conn.php';
-        $query = "SELECT * FROM linkingtable WHERE $columnName = :givenId";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':givenId', $givenId, PDO::PARAM_INT);
+        
+        $stmt = $conn->prepare("SELECT ID FROM linkingtable WHERE $columnName = :givenId");
+        $stmt->bindParam(':givenId', $givenId);
         $stmt->execute();
-
+    
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    
         if (!$result) {
             return null; // ID not found
         }
+    
+        return $result; // Return the found linkId
     }
-
-
-
-
+    
 
 }
