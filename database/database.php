@@ -1,10 +1,13 @@
 <?php
+
 if (session_status() == PHP_SESSION_NONE) {
+
+
 session_start();
 }
 
 // Connection details
-$host = "localhost:3306";
+$host = "localhost";
 $dbname = "stadsklacht";
 $username = "root";
 $password = "";
@@ -20,4 +23,3 @@ $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 // Catching any exceptions that occur during the connection process and displaying an error message
 echo "Connection failed: " . $e->getMessage();
 }
-?>

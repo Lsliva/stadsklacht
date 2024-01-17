@@ -9,14 +9,6 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
-<body>
-<form method="post" action="klachten.php">
-    <label for="omschrijving">Omschrijving</label>
-    <input type="text" name="omschrijving" required>
-    <br>
-    <input type="submit" value="Submit">
-</form>
-</body>
 <style>
     input {
         width: 200px;
@@ -25,6 +17,73 @@
         box-sizing: border-box;
     }
 </style>
-<script src="assets/klachten.js"></script>
+<?php require_once 'inlogCheck.php'?>
+    <?php include("assets/nav.php"); ?>
+<?php $gebruikerId = $_SESSION['gebruikerId'];?>
+    <main>
+        <div class="content">
+            <form method="post" action="klachten.php">
+                <label for="omschrijving">Omschrijving</label>
+                <input type="text" name="omschrijving" required>
+                <input type="hidden" id="gebruikersId" name="gebruikersId" value="<?php echo $gebruikerId; ?>">
+                <br>
+                <input type="submit" value="Submit">
+            </form>
+
+            <div class="loginView">
+                    <!-- deze form moet je laten staan en voor nu negeren rensie -->
+                    <form method="post" action="sendLocation.php">
+                    <label for="locationType">Choose a location:</label>
+                        <div id="chooseLocationDiv">
+                            <label for="Current location">Current Location:</label>
+                            <input type="text" id="locationCord" name="locationCord" readonly>
+                            <input type="text" id="locationName" name="locationName" readonly>
+                            <br>
+                            <?php 
+                            // Retrieve location details from session
+                            $location = isset($_SESSION['chosenLocation']) ? $_SESSION['chosenLocation'] : null;
+                            $address = isset($_SESSION['chosenAddress']) ? $_SESSION['chosenAddress'] : '';
+                            if (!empty($location) && !empty($address)) : 
+                                ?>
+                                <label for="Chosen location">Chosen Location:</label>
+                                <input type="text" id="chosenLocationCord" name="chosenLocationLat" value="<?php echo "{$location['lat']}"; ?>" readonly>
+                                <input type="text" id="chosenLocationCord" name="chosenLocationLon" value="<?php echo "{$location['lon']}"; ?>" readonly>
+                                <?php echo $address; ?>
+                                <input type="hidden" id="chosenLocationName" name="chosenLocationName" value="<?php echo $address; ?>">
+
+                            <?php else : ?>
+                                <p>Location has yet to be chosen: <a href="klantStreetmap">Choose a location</a></p>
+                            <?php endif; ?>
+                        </div>
+                        <input type="submit" value="send GPS" class="submitButton">
+                    </form> 
+
+                    <div class="messagePHP"><?php
+                        if (isset($_SESSION['message'])) {
+                            echo $_SESSION['message'];
+                            unset($_SESSION['message']);
+                        }
+                        
+                        ?></div>
+                        <?php if (isset($_GET['message'])) { ?>
+                        <div class="message">
+                            <?php echo $_GET['message']; ?>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+    </main>
+    <style>
+        input {
+            width: 200px;
+            padding: 10px 15px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <script src="assets/klachten.js"></script>
+
+
 </body>
 </html>

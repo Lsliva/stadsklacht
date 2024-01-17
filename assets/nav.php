@@ -49,12 +49,45 @@ require 'database/database.php';
                 <li class="nav-item active">
                     <a class="nav-link" href="./">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="openstreetmap">map</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="klantStreetmap">+ complaint</a>
-                </li>
+                <?php
+                // Check if user is logged in
+                if(isset($_SESSION['username'])) {
+                    require 'rights.php';
+                     // Display different navigation bar based on user's 'functie'
+                     switch($rights) {
+                        case "admin":
+                            echo '<li class="nav-item"><a class="nav-link" href="openstreetmap">map</a></li>';
+                            echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';
+                            echo '<li class="nav-item"><a class="nav-link" href="klachtenread">All complaints</a></li>';  
+                            break;
+                        case "management":
+                            echo '<li class="nav-item"><a class="nav-link" href="openstreetmap">map</a></li>';
+                            echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';    
+                            echo '<li class="nav-item"><a class="nav-link" href="klachtenread">All complaints</a></li>';                          
+                            break;
+                        case 'NULL'|| NULL:
+                            // Display navigation bar for klant
+                            echo '<li class="nav-item"><a class="nav-link" href="about">about us</a></li>';  
+                            echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';  
+                            echo '<li class="nav-item"><a class="nav-link" href="klachtenreadKlant">All my complaints</a></li>';  
+                            break;
+                    default:
+                        // Display default navigation bar
+                        break;
+                    }
+
+                } else {
+
+                    // Display navigation bar for non-logged-in users
+                    ?>
+                   <li class="nav-item">
+                    <a class="nav-link" href="about">about</a>
+                    </li>
+
+                    <?php
+
+                }
+                ?>
             </ul>
         </div>
         <div class="quote_btn-container  d-flex justify-content-center">
