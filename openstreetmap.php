@@ -377,7 +377,19 @@ session_start();
                                 const popupContent = generatePopupContent(location);
                                 L.marker([location.latitude, location.longitude])
                                     .addTo(map)
-                                    .bindPopup(popupContent);
+                                    .bindPopup(popupContent)
+                                    .on('click', function (e) {
+                                    // Adjust the map bounds to include the entire popup content
+                                    map.fitBounds(this.getPopup().getLatLng().toBounds(600));
+                                    const targetZoomLevel = 13; // Adjust the zoom level as needed
+                                    map.setView([this.getPopup().getLatLng().lat + 0.002, this.getPopup().getLatLng().lng], map.targetZoomLevel);
+                                    // map.setView([this.getPopup().getLatLng().lat + 0.002, this.getPopup().getLatLng().lng], map.getZoom());
+
+                                })
+                                .on('popupclose', function (e) {
+                        // Reset the map zoom level when the popup is closed
+                        map.setView([51.9225, 4.47917], 11);
+                    });
                             });
                         })
                         .catch(error => console.error('Error fetching GPS locations:', error));
