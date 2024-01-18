@@ -70,6 +70,7 @@ require 'database/database.php';
                             echo '<li class="nav-item"><a class="nav-link" href="about">about us</a></li>';  
                             echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';  
                             echo '<li class="nav-item"><a class="nav-link" href="klachtenreadKlant">All my complaints</a></li>';  
+                            echo '<li class="nav-item"><a class="nav-link" href="account">Account</a></li>';
                             break;
                     default:
                         // Display default navigation bar
