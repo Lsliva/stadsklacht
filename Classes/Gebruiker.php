@@ -4,7 +4,7 @@ class Gebruiker {
     protected $email;
     protected $wachtwoord;
 
-    public function __construct($email, $wachtwoord) {
+    public function __construct($email = NULL, $wachtwoord = NULL) {
         $this->email = $email;
         $this->wachtwoord = $wachtwoord;
     }
