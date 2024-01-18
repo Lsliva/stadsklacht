@@ -112,13 +112,14 @@ session_start();
                     | <button popovertarget="updateklacht"><box-icon size="xs" name='edit-alt'></box-icon><button><br>
                     
                     <div id="updateklacht" popover>
-                        <form method="POST" action="updateKlacht.php">
-                            <input type="hidden" name="gebruikersId" value="${location.gebruikersId}">
+                        <form method="POST" action="klachtUpdate.php">
                             <input type="hidden" name="klachtenId" value="${location.klachtenId}">
                             <label>Naam:</label>
-                            <input type="text" name="usernameKlant" value="${location.naam}"><br>
+                            ${location.naam}
+                            <br>
                             <label>Email:</label>
-                            <input type="email" name="email" value="${location.email}"><br>
+                            ${location.email}
+                            <br>
                             <label>Omschrijving:</label>
                             <input type="text" name="omschrijving" value="${location.omschrijving}"><br>
                             <label>Status:</label>

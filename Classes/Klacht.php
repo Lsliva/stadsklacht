@@ -167,10 +167,9 @@ class Klacht
         echo '</table></div>';
     }
 
-    public function updateKlacht($klachtId)
+    public function updateKlacht($klachtId, $omschrijving, $status)
     {
-        require 'database/conn.php';
-
+        require 'database/conn.php'; 
         $omschrijving = $this->get_omschrijving();
         $gpsId = $this->get_gpsId();
         $foto = $this->get_foto();
