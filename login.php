@@ -33,14 +33,25 @@ try {
         $hashed_password = $results[0]['wachtwoord'];
         if (password_verify($password, $hashed_password)) {
             $_SESSION['username'] = $username;
-            // require 'rights.php';
-            if (isset($_SESSION['return_to'])) {
-                $return_to = $_SESSION['return_to'];
-                unset($_SESSION['return_to']);
-                header('Location: ' . $return_to);
+            require_once 'Classes/Klacht.php';
+
+            $klantIdSession = new Klacht();
+            $klantId = $klantIdSession->getKlantIdSession($_SESSION['username']);
+            // echo "<pre> test " . print_r($klantId, true) . "</pre>";
+            if ($klantId !== null) {
+                $_SESSION['gebruikerId'] = (int)$klantId; // Use 'gebruikerId' consistently
+                // echo "<pre> test " . print_r($klantId, true) . "</pre>";
+                if (isset($_SESSION['return_to'])) {
+                    $return_to = $_SESSION['return_to'];
+                    unset($_SESSION['return_to']);
+                    header('Location: ' . $return_to);
+                } else {
+                    header("Location: ./");
+                }
             } else {
-                header("Location: ./");
+                echo 'Error: Klant ID not found';
             }
+            // require 'rights.php';
         } else {
             $_SESSION['message'] = 'Invalid login credentials. Please try again.';
             header("Location: loginForm");
@@ -52,4 +63,3 @@ try {
 } catch (PDOException $e) {
     echo "Connection failed: " . $e->getMessage();
 }
-?> b

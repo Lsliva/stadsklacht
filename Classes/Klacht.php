@@ -108,25 +108,22 @@ class Klacht
     }
 
     // methods specific to handling complaints
-    public function createKlacht()
+    public function createKlachten($omschrijving, $gebruikersId)
     {
-        require "database/conn.php";
+        require 'database/conn.php';
+        // $gebruikersId = (int)$gebruikersId;
+        $sql = $conn->prepare('INSERT INTO klachten (omschrijving, gebruikersId) VALUES (:omschrijving, :gebruikersId)');
+        $sql->bindParam(':omschrijving', $omschrijving);
+        $sql->bindParam(':gebruikersId', $gebruikersId);
+        $sql->execute();
 
-        $omschrijving = $this->get_omschrijving();
-        $gpsId = $this->get_gpsId();
-        $foto = $this->get_foto();
-        $klantId = $this->get_klantId();
-        $status = $this->get_status();
-        $timestamp = $this->get_timestamp();
-        $gebruikersId = $this->get_gebruikersId();
-
-        $sql = "INSERT INTO klachten (omschrijving, gpsId, foto, klantId, status, timestamp, gebruikersId)
-                VALUES ('$omschrijving', '$gpsId', '$foto', '$klantId', '$status', '$timestamp', '$gebruikersId')";
-
-        if (mysqli_query($con, $sql)) {
-            echo "<p class='klachtMaded'>Klacht succesvol aangemaakt!</p>";
+        // Check if the execution was successful
+        if ($sql->rowCount() > 0) {
+            $last_id = $conn->lastInsertId();
+            // echo $last_id;
+            return $last_id;
         } else {
-            echo "Fout bij het aanmaken van de klacht: " . mysqli_error($con);
+            echo "Error: " . $sql->errorInfo()[2]; // Get the detailed error message
         }
     }
 
@@ -150,17 +147,17 @@ class Klacht
         $sql->execute();
 
         echo '<div style="display: flex; padding: 24px; font-size: 20px; justify-content: center; text-align: center; color: white; flex-direction: column; "><table>';
-        echo '<tr><th>ID</th><th>Omschrijving</th><th>gpsID</th><th>Foto ID</th> <th>Status</th> <th>Timestamp</th><th>Gebruikers ID</th><th>Acties</th><th>Acties</th><th>Acties</th></tr>';
+        echo '<tr><th>ID</th><th>Omschrijving</th><th>Foto ID</th> <th>Status</th> <th>Timestamp</th><th>Gebruikers ID</th><th>linkId</th><th>Acties</th><th>Acties</th><th>Acties</th></tr>';
 
         foreach ($sql as $klacht) {
             echo '<tr>';
             echo '<td>' . $klacht['id'] . '</td>';
             echo '<td>' . $klacht['omschrijving'] . '</td>';
-            echo '<td>' . $klacht['gpsId'] . '</td>';
             echo '<td>' . $klacht['foto'] . '</td>';
             echo '<td>' . $klacht['status'] . '</td>';
             echo '<td>' . $klacht['timestamp'] . '</td>';
             echo '<td>' . $klacht['gebruikersId'] . '</td>';
+            echo '<td>' . $klacht['linkId'] . '</td>';
             echo '<td><a href="create_klacht.php">Create</a></td>';
             echo '<td><a href="?delete=' . $klacht['id'] . '">Delete</a></td>';
             echo '<td><a href="update_klacht.php">Update</a></td>';
@@ -188,6 +185,26 @@ class Klacht
             echo "<p class='klachtUpdated'>Klacht succesvol bijgewerkt!</p>";
         } else {
             echo "Fout bij het bijwerken van de klacht: " . mysqli_error($con);
+        }
+    }
+
+
+    public function getKlantIdSession($qqleq) {
+
+        require_once 'database/conn.php';
+        $sql = $conn->prepare('SELECT id FROM gebruikers WHERE naam = :username');
+        $sql->bindParam(':username', $qqleq);
+
+        $sql->execute();
+
+        $row = $sql->fetch(PDO::FETCH_ASSOC);
+
+
+        if ($row) {
+            return $row['id'];
+        } else {
+            return null;
+
         }
     }
 }

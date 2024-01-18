@@ -9,40 +9,25 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 </head>
-<body>
+<style>
+    input {
+        width: 200px;
+        padding: 10px 15px;
+        margin: 5px 0;
+        box-sizing: border-box;
+    }
+</style>
 <?php require_once 'inlogCheck.php'?>
     <?php include("assets/nav.php"); ?>
+<?php $gebruikerId = intval($_SESSION['gebruikerId']);?>
     <main>
         <div class="content">
-            
-
-            <div class="loginView">  
-            <h2>Klachten .Form</h2>  
-
-                <div class="loginForm">          
-                    <form method="post" action="login.php">
-                        <div class="labelInput">
-                            <label class="iconField" for="naam"><i class='bx bxs-user'></i></label>
-                            <input type="text" id="naam" name="naam" placeholder="Username" value="<?php echo isset($_SESSION['usernamePost']) ? $_SESSION['usernamePost'] : ''; ?>" required>
-                        </div>
-                        <div class="labelInput">
-                            <label class="iconField" for="wachtwoord"><i class='bx bxs-lock-alt' ></i></label>
-                            <input type="password" id="wachtwoord" name="wachtwoord" placeholder="Password" value="<?php echo isset($_SESSION['passwordPost']) ? $_SESSION['passwordPost'] : ''; ?>" required>
-                        </div>
-
-                        <input type="submit" value="send" class="submitButton">
-
-                        <p class="redirect">New here? <a href="registerForm">Sign up now<i class='bx bxs-right-arrow-alt'></i></a></p>
-                        
-                    </form> 
-                    <!-- deze form moet je laten staan en voor nu negeren rensie -->
-                    <form method="post" action="sendLocation.php">
-                    <label for="locationType">Choose a location:</label>
+            <form method="post" action="createKlacht.php">
+                <label for="omschrijving">Omschrijving</label>
+                <input type="text" name="omschrijving" required>
+                <input type="hidden" id="gebruikersId" name="gebruikersId" value="<?php echo $gebruikerId; ?>">
+                <br>
                         <div id="chooseLocationDiv">
-                            <label for="Current location">Current Location:</label>
-                            <input type="text" id="locationCord" name="locationCord" readonly>
-                            <input type="text" id="locationName" name="locationName" readonly>
-                            <br>
                             <?php 
                             // Retrieve location details from session
                             $location = isset($_SESSION['chosenLocation']) ? $_SESSION['chosenLocation'] : null;
@@ -59,7 +44,7 @@
                                 <p>Location has yet to be chosen: <a href="klantStreetmap">Choose a location</a></p>
                             <?php endif; ?>
                         </div>
-                        <input type="submit" value="send GPS" class="submitButton">
+                        <input type="submit" value="send complaint" class="submitButton">
                     </form> 
 
                     <div class="messagePHP"><?php
@@ -76,7 +61,6 @@
                     <?php } ?>
                 </div>
             </div>
-        </div>
     </main>
     <style>
         input {
@@ -88,6 +72,7 @@
     </style>
 
     <script src="assets/klachten.js"></script>
+
 
 </body>
 </html>
