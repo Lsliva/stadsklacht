@@ -1,6 +1,6 @@
 <?php
 // Include the Artikel.php file, which contains the Artikel class
-require 'Classes/klachten.php';
+require 'Classes/stadsklachten';
 
 // Check if the form has been submitted via the POST method
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {

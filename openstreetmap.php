@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
 </head>
 
 <body>
@@ -14,9 +15,16 @@
             max-width: 1000px;
         } */
     </style>
-    <?php
-    include 'assets/nav.php';
-    ?>
+<?php
+require_once 'inlogCheck.php';
+
+session_start();
+    if ($_SESSION['rights'] !== 'management' && $_SESSION['rights'] !== 'admin'){ 
+        header("Location: restrictedContent");            
+        } else {  
+            session_abort();
+?>
+<?php include 'assets/nav.php';?>
     <div class="content">
         <form id="gpsSearchForm">
             <label for="klachtenId">Enter klachtenId:</label>
@@ -59,11 +67,15 @@
             
             // Function to generate popup content
             function generatePopupContent(location) {
+             
                 let status;
                 let picture;
                 let statusEdit;
-
-                if (location.status === null) {
+                let address = location.locationName;
+                if (!location.locationName) {
+                    address = location.longitude + ' | ' + location.latitude;
+                }
+                 if (location.status === null) {
                     status = 'not fixed';
                     statusEdit = `
                         <select id="status" name="status" required>
@@ -94,8 +106,11 @@
                     ${location.email} <br>
                     <strong>Omschrijving:</strong> ${location.omschrijving} <br>
                     ${picture} <br>
-                    ${location.timestamp} | ${status} | 
-                    <button popovertarget="updateklacht"><box-icon size="xs" name='edit-alt'></box-icon><button><br>
+                    ${location.timestamp} | ${status} | <br>
+                    ${address} 
+
+                    | <button popovertarget="updateklacht"><box-icon size="xs" name='edit-alt'></box-icon><button><br>
+                    
                     <div id="updateklacht" popover>
                         <form method="POST" action="updateKlacht.php">
                             <input type="hidden" name="gebruikersId" value="${location.gebruikersId}">
@@ -278,19 +293,19 @@
                         attribution: '© OpenStreetMap contributors'
                     }).addTo(map);
 
-                    // Function to add a new marker on map click
-                    function onMapClick(e) {
-                        var popupMessage = prompt("Enter the information for the new marker:");
+                    // // Function to add a new marker on map click
+                    // function onMapClick(e) {
+                    //     var popupMessage = prompt("Enter the information for the new marker:");
 
-                        if (popupMessage) {
-                            var newMarker = L.marker(e.latlng).addTo(map)
-                                .bindPopup(popupMessage);
-                            sendDataToPHP(e);
-                        }
-                    }
+                    //     if (popupMessage) {
+                    //         var newMarker = L.marker(e.latlng).addTo(map)
+                    //             .bindPopup(popupMessage);
+                    //         sendDataToPHP(e);
+                    //     }
+                    // }
 
-                    // Add click event listener to the map
-                    map.on('click', onMapClick);
+                    // // Add click event listener to the map
+                    // map.on('click', onMapClick);
 
                     // Get user's location using Geolocation API
                     if (navigator.geolocation) {
@@ -362,13 +377,26 @@
                                 const popupContent = generatePopupContent(location);
                                 L.marker([location.latitude, location.longitude])
                                     .addTo(map)
-                                    .bindPopup(popupContent);
+                                    .bindPopup(popupContent)
+                                    .on('click', function (e) {
+                                    // Adjust the map bounds to include the entire popup content
+                                    map.fitBounds(this.getPopup().getLatLng().toBounds(600));
+                                    const targetZoomLevel = 13; // Adjust the zoom level as needed
+                                    map.setView([this.getPopup().getLatLng().lat + 0.002, this.getPopup().getLatLng().lng], map.targetZoomLevel);
+                                    // map.setView([this.getPopup().getLatLng().lat + 0.002, this.getPopup().getLatLng().lng], map.getZoom());
+
+                                })
+                                .on('popupclose', function (e) {
+                        // Reset the map zoom level when the popup is closed
+                        map.setView([51.9225, 4.47917], 11);
+                    });
                             });
                         })
                         .catch(error => console.error('Error fetching GPS locations:', error));
             });
         </script>
     </div>
+    <?php } ?>
 </body>
 
 </html>

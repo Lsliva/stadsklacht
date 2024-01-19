@@ -6,5 +6,6 @@
         <a class="boeking" href="route.php">Boekings</a>
         <a class="account" href="route.php">Account</a>
         <a class="route" href="route.php">Route</a>
+        <a class="route" href="account.php">Account</a>
     </nav>
 </header>

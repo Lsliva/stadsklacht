@@ -12,7 +12,16 @@
     </style>
 </head>
 <body>
-    
+    <?php
+    // require 'assets/nav.php';
+    //     require 'Classes/Linkingtable.php';
+    //     $newlink = new Linkingtable();
+    //     $newlink->getLinkId(20, 'klachtenId');
+    $klachtenId = 20;
+    require 'Classes/Gps.php';
+    $newGps = new Gps();    
+    echo json_encode($newGps->searchGpsByKlachtenId($klachtenId));
+    ?>
     <div id="map"></div>
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
     <script>

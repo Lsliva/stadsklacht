@@ -61,10 +61,12 @@ button {
 
 #updateklacht {
   text-align: center;
-  top: 50px;
-  left: 300px;
+  top: 90px;
   padding: 20px;
   border-radius: 10px;
+  height: 80vh;
+  box-shadow: 0 8px 32px rgb(2, 4 ,24);
+
 }
 
 #nextButton, #previousButton {
@@ -560,10 +562,13 @@ li {
 .my-swal-title {
   padding: 10px;
   margin: 10px;
+  
 }
 
 .my-swal-container {
-
+}
+button a {
+  color: white;
 }
 
 /* media query */
