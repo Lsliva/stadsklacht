@@ -26,7 +26,8 @@ include("Classes/Klacht.php");
         <div class="readCenter">
             <?php
             $klacht1 = new Klacht();
-            $klacht1->readKlacht();
+            $klacht1->readKlachtgebruiker($_SESSION['gebruikerId']);
+
             ?>
         </div>
 
