@@ -58,10 +58,12 @@ class Gps {
 
         // Fetch related klachten information for each GPS location
         foreach ($results as &$location) {
+            require 'Classes/Gebruiker.php';
+            $gebruikerClass = new Gebruiker();
             $klachtenInfo = $this->getKlachten($linkId);
             // Check if klachten information is available
             if ($klachtenInfo) {
-                $gebruikerInfo = $this->getGebruiker($klachtenInfo['gebruikersId']);
+                $gebruikerInfo = $gebruikerClass->getGebruiker($klachtenInfo['gebruikersId']);
                 
                 // Merge klachten and gebruiker information into the existing result
                 $location = array_merge($location, $klachtenInfo, $gebruikerInfo);
@@ -76,7 +78,8 @@ class Gps {
     // get all the gps locations from the database with related klachten information
     public function getGps() {
         require 'database/conn.php';
-
+        require 'Classes/Gebruiker.php';
+        $gebruikerClass = new Gebruiker();
         $statement = $conn->prepare("SELECT locationName, latitude, longitude, linkId, timestamp FROM gps");
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -86,7 +89,7 @@ class Gps {
             $klachtenInfo = $this->getKlachten($location['linkId']);
             // Check if klachten information is available
             if ($klachtenInfo) {
-                $gebruikerInfo = $this->getGebruiker($klachtenInfo['gebruikersId']);
+                $gebruikerInfo = $gebruikerClass->getGebruiker($klachtenInfo['gebruikersId']);
                 
                 // Merge klachten and gebruiker information into the existing result
                 $location = array_merge($location, $klachtenInfo, $gebruikerInfo);
@@ -110,17 +113,7 @@ class Gps {
 
         return $results;
     }
-    // get the user information using gebruikerId for gps pins
-    public function getGebruiker($gebruikersId) {
-        require 'database/conn.php';
 
-        $statement = $conn->prepare("SELECT naam, email FROM gebruikers WHERE ID = :gebruikersId");
-        $statement->bindParam(':gebruikersId', $gebruikersId, PDO::PARAM_INT);
-        $statement->execute();
-        $results = $statement->fetch(PDO::FETCH_ASSOC);
-
-        return $results;
-    }
 
 }
 
