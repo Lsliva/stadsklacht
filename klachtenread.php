@@ -1,37 +1,55 @@
 <?php
-require_once 'inlogCheck.php';
+require 'Classes/KLacht.php';
 
-session_start();
-    if ($_SESSION['rights'] !== 'management' && $_SESSION['rights'] !== 'admin'){ 
-        header("Location: restrictedContent");            
-        } else {  
-            session_abort();
+// Assuming you have a method to get all complaints from the database in your Klacht class
+$klacht = new Klacht();
+$complaints = $klacht->getAllComplaints(); // You need to implement this method in your Klacht class
+
 ?>
-<?php include("assets/nav.php");?>
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="assets/style.scss">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Read Klacht</title>
+    <!-- Add your CSS styling here -->
 </head>
-<body>
-<?php
-include("Classes/Klacht.php");
-?><div class="readContent">
-    <div class="readCreate">
-        <div class="readCenter">
-            <?php
-            $klacht1 = new Klacht();
-            $klacht1->readKlacht();
-            ?>
-        </div>
 
-    </div>
+<body>
+<div style="display: flex; padding: 24px; font-size: 20px; justify-content: center; text-align: center; color: white; flex-direction: column; ">
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Omschrijving</th>
+            <th>Foto ID</th>
+            <th>Status</th>
+            <th>Timestamp</th>
+            <th>Gebruikers ID</th>
+            <th>linkId</th>
+            <th>Acties</th>
+            <th>Acties</th>
+            <th>Acties</th>
+        </tr>
+
+        <?php foreach ($complaints as $klacht) : ?>
+            <tr>
+                <td><?= $klacht['id'] ?></td>
+                <td><?= $klacht['omschrijving'] ?></td>
+                <td><?= $klacht['foto'] ?></td>
+                <td><?= $klacht['status'] ?></td>
+                <td><?= $klacht['timestamp'] ?></td>
+                <td><?= $klacht['gebruikersId'] ?></td>
+                <td><?= $klacht['linkId'] ?></td>
+                <td><a href="create_klacht.php">Create</a></td>
+                <td><a href="?delete=<?= $klacht['id'] ?>">Delete</a></td>
+                <td><a href="update_klacht.php">Update</a></td>
+            </tr>
+        <?php endforeach; ?>
+
+    </table>
 </div>
-<?php } ?>
 </body>
+
 </html>
