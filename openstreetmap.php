@@ -79,16 +79,16 @@ session_start();
                     status = 'not fixed';
                     statusEdit = `
                         <select id="status" name="status" required>
-                            <option value="status">${status}</option>
-                            <option value="status">Fixed</option>
-                            <option value="status">In progress</option>
+                            <option value="${status}">${status}</option>
+                            <option value="Fixed">Fixed</option>
+                            <option value="In progress">In progress</option>
                         </select>`;
                 } else if (location.status == 'fixed' || location.status == 'In progress') {
                     status = location.status;
                     statusEdit = location.status == 'fixed' ? location.status : `
                         <select id="status" name="status" required>
-                            <option value="status">${status}</option>
-                            <option value="status">Fixed</option>
+                            <option value="${status}">${status}</option>
+                            <option value="Fixed">Fixed</option>
                         </select>`;
                 } else {
                     status = 'Issue found';
@@ -113,7 +113,8 @@ session_start();
                     
                     <div id="updateklacht" popover>
                         <form method="POST" action="klachtUpdate.php">
-                            <input type="hidden" name="klachtenId" value="${location.klachtenId}">
+                            <input type="hidden" name="gebruikersId" value="${location.gebruikersId}">
+                            <input type="hidden" name="linkId" value="${location.linkId}">
                             <label>Naam:</label>
                             ${location.naam}
                             <br>
@@ -127,7 +128,7 @@ session_start();
                             <br>
                             <label>Timestamp:</label>
                             ${location.timestamp}
-                            <div class="deleteButton"><a href="deleteKlacht.php?action=delete&klachtenId='${klachtenId}">Delete<box-icon size="sm" type='solid' name='trash'></box-icon></a></div>
+                            <div class="deleteButton"><a href="deleteKlacht.php?action=delete&linkId='${location.linkId}">Delete<box-icon size="sm" type='solid' name='trash'></box-icon></a></div>
                             <div class="formEnd">
                                 <input type="submit" value="Submit">                      
                                 <p><a id="cancel" href="menuKlant">Cancel</a></p>

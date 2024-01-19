@@ -167,25 +167,19 @@ class Klacht
         echo '</table></div>';
     }
 
-    public function updateKlacht($klachtId, $omschrijving, $status)
-    {
-        require 'database/conn.php'; 
-        $omschrijving = $this->get_omschrijving();
-        $gpsId = $this->get_gpsId();
-        $foto = $this->get_foto();
-        $klantId = $this->get_klantId();
-        $status = $this->get_status();
-        $timestamp = $this->get_timestamp();
-        $gebruikersId = $this->get_gebruikersId();
+    public function updateKlacht($linkId, $omschrijving, $status)
+{
+    require 'database/conn.php';
 
-        $sql = "UPDATE klachten SET omschrijving = '$omschrijving', gpsId = '$gpsId', foto = '$foto', klantId = '$klantId', status = '$status', timestamp = '$timestamp', gebruikersId = '$gebruikersId' WHERE id = $klachtId";
+    $sql = $conn->prepare('UPDATE klachten SET omschrijving = :omschrijving, status = :status WHERE linkId = :linkId');
+    $sql->bindParam(':linkId', $linkId);
+    $sql->bindParam(':omschrijving', $omschrijving);
+    $sql->bindParam(':status', $status);
+    $sql->execute();
+    $_SESSION['message'] = 'Klacht geupdate!';
+        header("Location: openstreetmap");
+}
 
-        if (mysqli_query($con, $sql)) {
-            echo "<p class='klachtUpdated'>Klacht succesvol bijgewerkt!</p>";
-        } else {
-            echo "Fout bij het bijwerken van de klacht: " . mysqli_error($con);
-        }
-    }
 
 
     public function getKlantIdSession($qqleq) {

@@ -1,11 +1,11 @@
 <?php
 // Include the klacht.php file, which contains the klacht class
-require 'Classes/klacht';
+require 'Classes/klacht.php';
 
 // Check if the form has been submitted via the POST method
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve the values from the form data
-    $klachtenId = $_POST['$klachtenId'];
+    $linkId = $_POST['linkId'];
     $omschrijving = $_POST['omschrijving'];
     $status = $_POST['status'];
 
@@ -13,6 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $klacht1 = new Klacht();
 
     // Call the update method on the object, passing in the form data as arguments
-    $klacht1->updateKlacht($klachtenId, $omschrijving, $status);
+    $klacht1->updateKlacht($linkId, $omschrijving, $status);
 }
 ?>
