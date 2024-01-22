@@ -1,10 +1,6 @@
 <?php
 require_once 'inlogCheck.php';
 
-session_start();
-if ($_SESSION['rights'] !== 'management' && $_SESSION['rights'] !== 'admin'){
-    header("Location: restrictedContent");
-} else {
 session_abort();
 ?>
 <?php include("assets/nav.php");?>
@@ -33,6 +29,6 @@ include("Classes/Klacht.php");
 
     </div>
 </div>
-<?php } ?>
+<?php  ?>
 </body>
 </html>
