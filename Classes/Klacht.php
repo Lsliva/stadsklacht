@@ -131,18 +131,18 @@ class Klacht
     {
         require 'database/conn.php';
 
+        
+    if (isset($_GET['delete'])) {
+        $id = $_GET['delete'];
 
-        if (isset($_GET['delete'])) {
-            $id = $_GET['delete'];
+        // First, delete related records in the 'gps' table
+        $deleteGpsRecords = $conn->prepare('DELETE FROM gps WHERE klachtenId = ?');
+        $deleteGpsRecords->execute([$id]);
 
-            // First, delete related records in the 'gps' table
-            $deleteGpsRecords = $conn->prepare('DELETE FROM gps WHERE klachtenId = ?');
-            $deleteGpsRecords->execute([$id]);
-
-            // Now, delete the record from the 'klachten' table
-            $deleteKlachtRecord = $conn->prepare('DELETE FROM klachten WHERE id = ?');
-            $deleteKlachtRecord->execute([$id]);
-        }
+        // Now, delete the record from the 'klachten' table
+        $deleteKlachtRecord = $conn->prepare('DELETE FROM klachten WHERE id = ?');
+        $deleteKlachtRecord->execute([$id]);
+    }
         $sql = $conn->prepare('SELECT * FROM klachten');
         $sql->execute();
 
@@ -188,68 +188,19 @@ class Klacht
         }
     }
 
+    
+    // get the klachten information using klachtenId for gps pins
+    public function getKlachten($linkId) {
+        require 'database/conn.php';
 
-    public function getKlantIdSession($qqleq)
-    {
+        $statement = $conn->prepare("SELECT omschrijving, foto, status, timestamp, gebruikersId FROM klachten WHERE linkId = :linkId");
+        $statement->bindParam(':linkId', $linkId, PDO::PARAM_INT);
+        $statement->execute();
+        $results = $statement->fetch(PDO::FETCH_ASSOC);
 
-        require_once 'database/conn.php';
-        $sql = $conn->prepare('SELECT id FROM gebruikers WHERE naam = :username');
-        $sql->bindParam(':username', $qqleq);
-
-        $sql->execute();
-
-        $row = $sql->fetch(PDO::FETCH_ASSOC);
-
-
-        if ($row) {
-            return $row['id'];
-        } else {
-            return null;
-
-        }
+        return $results;
     }
 
 
-public function readKlachtgebruiker($gebruikersId)
-{
-    require 'database/conn.php';
 
-
-    if (isset($_GET['delete'])) {
-        $id = $_GET['delete'];
-
-        // First, delete related records in the 'gps' table
-        $deleteGpsRecords = $conn->prepare('DELETE FROM gps WHERE klachtenId = ?');
-        $deleteGpsRecords->execute([$id]);
-
-        // Now, delete the record from the 'klachten' table
-        $deleteKlachtRecord = $conn->prepare('DELETE FROM klachten WHERE id = ?');
-        $deleteKlachtRecord->execute([$id]);
-    }
-    $sql = $conn->prepare('SELECT * FROM klachten WHERE gebruikersId = :gebruikersId');
-
-
-    $sql->bindParam(':gebruikersId', $gebruikersId);
-    $sql->execute();
-
-    echo '<div style="display: flex; padding: 24px; font-size: 20px; justify-content: center; text-align: center; color: white; flex-direction: column; "><table>';
-    echo '<tr><th>ID</th><th>Omschrijving</th><th>Foto ID</th> <th>Status</th> <th>Timestamp</th><th>Gebruikers ID</th><th>linkId</th><th>Acties</th><th>Acties</th><th>Acties</th></tr>';
-
-    foreach ($sql as $klacht) {
-        echo '<tr>';
-        echo '<td>' . $klacht['id'] . '</td>';
-        echo '<td>' . $klacht['omschrijving'] . '</td>';
-        echo '<td>' . $klacht['foto'] . '</td>';
-        echo '<td>' . $klacht['status'] . '</td>';
-        echo '<td>' . $klacht['timestamp'] . '</td>';
-        echo '<td>' . $klacht['gebruikersId'] . '</td>';
-        echo '<td>' . $klacht['linkId'] . '</td>';
-        echo '<td><a href="create_klacht.php">Create</a></td>';
-        echo '<td><a href="?delete=' . $klacht['id'] . '">Delete</a></td>';
-        echo '<td><a href="update_klacht.php">Update</a></td>';
-        echo '</tr>';
-    }
-
-    echo '</table></div>';
-}
 }
