@@ -201,6 +201,54 @@ class Klacht
         return $results;
     }
 
+    public function readKlachtGebruiker($gebruikersId)
+    {
+        require 'database/conn.php';
 
+
+        if (!isset($_SESSION['gebruikerId'])) {
+            // Redirect naar de inlogpagina als de gebruiker niet is ingelogd
+            header("Location: readKlacht.php");
+            exit();
+        }
+
+        // Remove the following line, as $gebruikersId is already set using $_SESSION['gebruikersId']
+        // $gebruikersId = $_SESSION['gebruikersId'];
+
+        if (isset($_GET['delete'])) {
+            $id = $_GET['delete'];
+
+            // Eerst verwijderen van gerelateerde records in de 'gps' tabel
+            $deleteGpsRecords = $conn->prepare('DELETE FROM gps WHERE klachtenId = ?');
+            $deleteGpsRecords->execute([$id]);
+
+            // Nu het record verwijderen uit de 'klachten' tabel
+            $deleteKlachtRecord = $conn->prepare('DELETE FROM klachten WHERE id = ? AND gebruikersId = ?');
+            $deleteKlachtRecord->execute([$id, $gebruikersId]);
+        }
+
+        $sql = $conn->prepare('SELECT * FROM klachten WHERE gebruikersId = ?');
+        $sql->execute([$gebruikersId]);
+
+        echo '<div style="display: flex; padding: 24px; font-size: 20px; justify-content: center; text-align: center; color: white; flex-direction: column; "><table>';
+        echo '<tr><th>ID</th><th>Omschrijving</th><th>Foto ID</th> <th>Status</th> <th>Timestamp</th><th>Gebruikers ID</th><th>linkId</th><th>Acties</th><th>Acties</th><th>Acties</th></tr>';
+
+        foreach ($sql as $klacht) {
+            echo '<tr>';
+            echo '<td>' . $klacht['id'] . '</td>';
+            echo '<td>' . $klacht['omschrijving'] . '</td>';
+            echo '<td>' . $klacht['foto'] . '</td>';
+            echo '<td>' . $klacht['status'] . '</td>';
+            echo '<td>' . $klacht['timestamp'] . '</td>';
+            echo '<td>' . $klacht['gebruikersId'] . '</td>';
+            echo '<td>' . $klacht['linkId'] . '</td>';
+            echo '<td><a href="create_klacht.php">Create</a></td>';
+            echo '<td><a href="?delete=' . $klacht['id'] . '">Delete</a></td>';
+            echo '<td><a href="update_klacht.php">Update</a></td>';
+            echo '</tr>';
+        }
+
+        echo '</table></div>';
+    }
 
 }

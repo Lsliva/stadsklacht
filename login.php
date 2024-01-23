@@ -33,9 +33,9 @@ try {
         $hashed_password = $results[0]['wachtwoord'];
         if (password_verify($password, $hashed_password)) {
             $_SESSION['username'] = $username;
-            require_once 'Classes/Klacht.php';
+            require_once 'Classes/Gebruiker.php';
 
-            $klantIdSession = new Klacht();
+            $klantIdSession = new Gebruiker();
             $klantId = $klantIdSession->getKlantIdSession($_SESSION['username']);
             // echo "<pre> test " . print_r($klantId, true) . "</pre>";
             if ($klantId !== null) {

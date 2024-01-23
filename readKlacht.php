@@ -22,13 +22,13 @@ include("Classes/Klacht.php");
         <div class="readCenter">
             <?php
             $klacht1 = new Klacht();
-            $klacht1->readKlachtgebruiker($_SESSION['gebruikerId']);
+            $klacht1->readKlachtGebruiker($_SESSION['gebruikerId']);
 
             ?>
         </div>
 
     </div>
 </div>
-<?php  ?>
+
 </body>
 </html>
