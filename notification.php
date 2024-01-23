@@ -1,39 +1,37 @@
 <?php
-// Stel de datum in van twee weken geleden
-$limietDatum = date('Y-m-d', strtotime('-2 weeks'));
+require_once 'inlogCheck.php';
 
-// Verbind met de database (vervang deze gegevens door je eigen databasegegevens)
-$host = "localhost";
-$gebruikersnaam = "root";
-$wachtwoord = "";
-$database = "stadsklacht";
-
-$conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
-
-
-// Controleer op fouten in de verbinding
-if ($conn->connect_error) {
-    die("Verbindingsfout: " . $conn->connect_error);
-}
-
-// Haal locaties op waarvan de toevoegdatum twee weken geleden is
-$sql = "SELECT locatie_naam FROM jouw_tabel WHERE toevoegdatum <= '$limietDatum'";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    // Stuur een notificatie naar de beheerder
-    $beheerderEmail = "beheerder@example.com";
-    $onderwerp = "Notificatie: Locaties toegevoegd twee weken geleden";
-    $bericht = "Er zijn locaties toegevoegd twee weken geleden. Controleer de lijst.";
-
-    // Stuur de e-mail naar de beheerder
-    mail($beheerderEmail, $onderwerp, $bericht);
-
-    echo "Notificatie verstuurd naar de beheerder.";
+session_start();
+if ($_SESSION['rights'] !== 'management' && $_SESSION['rights'] !== 'admin'){
+    header("Location: restrictedContent");
 } else {
-    echo "Geen locaties gevonden die twee weken geleden zijn toegevoegd.";
-}
-
-// Sluit de databaseverbinding
-$conn->close();
+session_abort();
 ?>
+<?php include("assets/nav.php");?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/style.scss">
+    <title>Document</title>
+</head>
+<body>
+<?php
+include("Classes/Klacht.php");
+?><div class="readContent">
+    <div class="readCreate">
+        <div class="readCenter">
+            <?php
+            $klacht1 = new Klacht();
+            $klacht1->readnotification();
+            ?>
+        </div>
+
+    </div>
+</div>
+<?php } ?>
+</body>
+</html>

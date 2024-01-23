@@ -59,11 +59,16 @@ require 'database/database.php';
                             echo '<li class="nav-item"><a class="nav-link" href="openstreetmap">map</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="klachtenread">All complaints</a></li>';  
+                            echo '<li class="nav-item"><a class="nav-link" href="notification">notification</a></li>';  
+
                             break;
                         case "management":
                             echo '<li class="nav-item"><a class="nav-link" href="openstreetmap">map</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';    
-                            echo '<li class="nav-item"><a class="nav-link" href="klachtenread">All complaints</a></li>';                          
+                            echo '<li class="nav-item">< class="nav-link" href="klachtenread">All complaints</<a>/li>';    
+                            echo '<li class="nav-item"><a class="nav-link" href="notification">notification</a></li>';  
+
+
                             break;
                         case 'NULL'|| NULL:
                             // Display navigation bar for klant
