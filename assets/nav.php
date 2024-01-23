@@ -69,7 +69,7 @@ require 'database/database.php';
                             // Display navigation bar for klant
                             echo '<li class="nav-item"><a class="nav-link" href="about">about us</a></li>';  
                             echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';  
-                            echo '<li class="nav-item"><a class="nav-link" href="klachtenreadKlant">All my complaints</a></li>';  
+                            echo '<li class="nav-item"><a class="nav-link" href="readKlacht">All my complaints</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="account">Account</a></li>';
                             break;
                     default:

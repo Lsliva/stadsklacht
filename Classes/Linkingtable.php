@@ -52,7 +52,7 @@ class Linkingtable {
         
 
         $_SESSION['message'] = 'Complaint sent successfully!';
-        header("Location: klachtenread");
+        header("Location: readKlacht");
     }
     
     // get the needed id from the linking table using linkId

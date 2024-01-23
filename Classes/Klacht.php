@@ -181,23 +181,19 @@ class Klacht
 }
 
 
+    
+    // get the klachten information using klachtenId for gps pins
+    public function getKlachten($linkId) {
+        require 'database/conn.php';
 
-    public function getKlantIdSession($qqleq) {
+        $statement = $conn->prepare("SELECT omschrijving, foto, status, timestamp, gebruikersId FROM klachten WHERE linkId = :linkId");
+        $statement->bindParam(':linkId', $linkId, PDO::PARAM_INT);
+        $statement->execute();
+        $results = $statement->fetch(PDO::FETCH_ASSOC);
 
-        require_once 'database/conn.php';
-        $sql = $conn->prepare('SELECT id FROM gebruikers WHERE naam = :username');
-        $sql->bindParam(':username', $qqleq);
-
-        $sql->execute();
-
-        $row = $sql->fetch(PDO::FETCH_ASSOC);
-
-
-        if ($row) {
-            return $row['id'];
-        } else {
-            return null;
-
-        }
+        return $results;
     }
+
+
+
 }
