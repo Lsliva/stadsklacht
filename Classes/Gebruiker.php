@@ -61,4 +61,4 @@ public function getKlantIdSession($qqleq) {
 
 }
 
-?>
+
