@@ -58,9 +58,11 @@ class Gps {
 
         // Fetch related klachten information for each GPS location
         foreach ($results as &$location) {
+            require 'Classes/Klacht.php';
             require 'Classes/Gebruiker.php';
+            $klachtClass = new Klacht();
             $gebruikerClass = new Gebruiker();
-            $klachtenInfo = $this->getKlachten($linkId);
+            $klachtenInfo = $klachtClass->getKlachten($linkId);
             // Check if klachten information is available
             if ($klachtenInfo) {
                 $gebruikerInfo = $gebruikerClass->getGebruiker($klachtenInfo['gebruikersId']);
@@ -78,15 +80,17 @@ class Gps {
     // get all the gps locations from the database with related klachten information
     public function getGps() {
         require 'database/conn.php';
+        require 'Classes/Klacht.php';
         require 'Classes/Gebruiker.php';
         $gebruikerClass = new Gebruiker();
-        $statement = $conn->prepare("SELECT locationName, latitude, longitude, linkId, timestamp FROM gps");
+        $klachtClass = new Klacht();
+        $statement = $conn->prepare("SELECT locationName, latitude, longitude, linkId, timestamp FROM gps WHERE status IS NULL OR status = 0");
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         // Fetch related klachten information for each GPS location
         foreach ($results as &$location) {
-            $klachtenInfo = $this->getKlachten($location['linkId']);
+            $klachtenInfo = $klachtClass->getKlachten($location['linkId']);
             // Check if klachten information is available
             if ($klachtenInfo) {
                 $gebruikerInfo = $gebruikerClass->getGebruiker($klachtenInfo['gebruikersId']);
@@ -101,17 +105,13 @@ class Gps {
         echo json_encode($results);
     }
 
-
-    // get the klachten information using klachtenId for gps pins
-    public function getKlachten($linkId) {
+    public function updateGps($linkId) {
         require 'database/conn.php';
 
-        $statement = $conn->prepare("SELECT omschrijving, foto, status, timestamp, gebruikersId FROM klachten WHERE linkId = :linkId");
+        $statement = $conn->prepare("UPDATE gps SET status = 1 WHERE linkId = :linkId");
         $statement->bindParam(':linkId', $linkId, PDO::PARAM_INT);
         $statement->execute();
-        $results = $statement->fetch(PDO::FETCH_ASSOC);
 
-        return $results;
     }
 
 

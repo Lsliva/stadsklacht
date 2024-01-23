@@ -167,44 +167,33 @@ class Klacht
         echo '</table></div>';
     }
 
-    public function updateKlacht($klachtId)
-    {
+    public function updateKlacht($linkId, $omschrijving, $status)
+{
+    require 'database/conn.php';
+
+    $sql = $conn->prepare('UPDATE klachten SET omschrijving = :omschrijving, status = :status WHERE linkId = :linkId');
+    $sql->bindParam(':linkId', $linkId);
+    $sql->bindParam(':omschrijving', $omschrijving);
+    $sql->bindParam(':status', $status);
+    $sql->execute();
+    $_SESSION['message'] = 'Klacht geupdate!';
+        header("Location: openstreetmap");
+}
+
+
+    
+    // get the klachten information using klachtenId for gps pins
+    public function getKlachten($linkId) {
         require 'database/conn.php';
 
-        $omschrijving = $this->get_omschrijving();
-        $gpsId = $this->get_gpsId();
-        $foto = $this->get_foto();
-        $klantId = $this->get_klantId();
-        $status = $this->get_status();
-        $timestamp = $this->get_timestamp();
-        $gebruikersId = $this->get_gebruikersId();
+        $statement = $conn->prepare("SELECT omschrijving, foto, status, timestamp, gebruikersId FROM klachten WHERE linkId = :linkId");
+        $statement->bindParam(':linkId', $linkId, PDO::PARAM_INT);
+        $statement->execute();
+        $results = $statement->fetch(PDO::FETCH_ASSOC);
 
-        $sql = "UPDATE klachten SET omschrijving = '$omschrijving', gpsId = '$gpsId', foto = '$foto', klantId = '$klantId', status = '$status', timestamp = '$timestamp', gebruikersId = '$gebruikersId' WHERE id = $klachtId";
-
-        if (mysqli_query($con, $sql)) {
-            echo "<p class='klachtUpdated'>Klacht succesvol bijgewerkt!</p>";
-        } else {
-            echo "Fout bij het bijwerken van de klacht: " . mysqli_error($con);
-        }
+        return $results;
     }
 
 
-    public function getKlantIdSession($qqleq) {
 
-        require_once 'database/conn.php';
-        $sql = $conn->prepare('SELECT id FROM gebruikers WHERE naam = :username');
-        $sql->bindParam(':username', $qqleq);
-
-        $sql->execute();
-
-        $row = $sql->fetch(PDO::FETCH_ASSOC);
-
-
-        if ($row) {
-            return $row['id'];
-        } else {
-            return null;
-
-        }
-    }
 }
