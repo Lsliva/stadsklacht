@@ -25,6 +25,8 @@
             <form method="post" action="createKlacht.php">
                 <label for="omschrijving">Omschrijving</label>
                 <input type="text" name="omschrijving" required>
+                <label for="foto">foto</label>
+                <input type="text" name="foto" required>
                 <input type="hidden" id="gebruikersId" name="gebruikersId" value="<?php echo $gebruikerId; ?>">
                 <br>
                         <div id="chooseLocationDiv">
