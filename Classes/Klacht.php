@@ -172,6 +172,78 @@ class Klacht
         echo '</table></div>';
     }
 
+    public function readnotification()
+    {
+        require 'database/conn.php';
+
+        
+    if (isset($_GET['delete'])) {
+        $id = $_GET['delete'];
+
+        // First, delete related records in the 'gps' table
+        $deleteGpsRecords = $conn->prepare('DELETE FROM gps WHERE klachtenId = ?');
+        $deleteGpsRecords->execute([$id]);
+
+        // Now, delete the record from the 'klachten' table
+        $deleteKlachtRecord = $conn->prepare('DELETE FROM klachten WHERE id = ?');
+        $deleteKlachtRecord->execute([$id]);
+    }
+        // Huidige datum en tijd
+$currentDateTime = new DateTime();
+
+// Twee weken geleden
+$twoWeeksAgo = $currentDateTime->sub(new DateInterval('P14D'));
+
+// Query om rijen op te halen waar de timestampkolom meer dan twee weken oud is
+$sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAgo->format('Y-m-d H:i:s') . "'"); 
+
+        $sql->execute();
+
+        echo '<div style="display: flex; padding: 24px; font-size: 20px; justify-content: center; text-align: center; color: white; flex-direction: column; "><table>';
+        echo '<tr><th>ID</th><th>Omschrijving</th><th>Foto ID</th> <th>Status</th> <th>Timestamp</th><th>Gebruikers ID</th><th>linkId</th><th>Acties</th><th>Acties</th><th>Acties</th></tr>';
+
+        foreach ($sql as $klacht) {
+            echo '<tr>';
+            echo '<td>' . $klacht['id'] . '</td>';
+            echo '<td>' . $klacht['omschrijving'] . '</td>';
+            echo '<td>' . $klacht['foto'] . '</td>';
+            echo '<td>' . $klacht['status'] . '</td>';
+            echo '<td>' . $klacht['timestamp'] . '</td>';
+            echo '<td>' . $klacht['gebruikersId'] . '</td>';
+            echo '<td>' . $klacht['linkId'] . '</td>';
+            echo '<td><a href="userupdate.php">Update</a></td>';
+            echo '</tr>';
+        }
+
+        echo '</table></div>';
+    }
+    public function NotificationCount() {
+        require 'database/conn.php';
+
+        // Huidige datum en tijd
+        $currentDateTime = new DateTime();
+    
+        // Twee weken geleden
+        $twoWeeksAgo = $currentDateTime->sub(new DateInterval('P14D'));
+    
+        // Voorbereiden van de SQL-query met een prepared statement
+// Query om rijen op te halen waar de timestampkolom meer dan twee weken oud is
+        $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAgo->format('Y-m-d H:i:s') . "'"); 
+    
+        // Uitvoeren van de query
+        $sql->execute();
+    
+       // Resultaten ophalen als een associatieve array
+    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+    
+       // Aantal rijen tellen
+    $rowCount = count($result);
+
+    return $rowCount;
+    }
+    
+    
     public function updateKlacht($linkId, $omschrijving, $status)
 {
     require 'database/conn.php';
