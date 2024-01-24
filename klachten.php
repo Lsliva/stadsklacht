@@ -5,7 +5,7 @@ require 'Classes/KLacht.php';
 if (isset($_POST)) {
 
     // Get the submitted form data
-    $gebruikerId= $_POST['gebruikersId'];
+    $gebruikerId = $_POST['gebruikersId'];
     $omschrijving = $_POST['omschrijving'];
 
     // check if there is any inapropriate word in the username or the email

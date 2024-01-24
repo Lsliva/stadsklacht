@@ -42,6 +42,25 @@ class Gebruiker {
         echo '</table></div>';
     }
 
+    public function getKlantIdSession($qqleq) {
+
+        require_once 'database/conn.php';
+        $sql = $conn->prepare('SELECT id FROM gebruikers WHERE naam = :username');
+        $sql->bindParam(':username', $qqleq);
+    
+        $sql->execute();
+    
+        $row = $sql->fetch(PDO::FETCH_ASSOC);
+    
+    
+        if ($row) {
+            return $row['id'];
+        } else {
+            return null;
+        }
+        
+    }
+
 
     public function updateGebruiker($gebruikerId, $naam, $wachtwoord) {
         require 'database/conn.php';
