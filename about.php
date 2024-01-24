@@ -35,7 +35,7 @@
         <div class="content">
 
         <h1>About Stadsklacht</h1>
-        <p>Welcome to the official website of the municipality of Rotterdam. Our goal is to make the city a better place for everyone. One way we achieve this is by providing a platform for you to report issues or complaints directly to us.</p>
+        <p>welcome to the official website of the municipality of Rotterdam. Our goal is to make the city a better place for everyone. One way we achieve this is by providing a platform for you to report issues or complaints directly to us.</p>
 
         <h2>Complaints Submission</h2>
         <p>Our website allows you to submit complaints with precise GPS locations, ensuring that we can address and resolve issues promptly. Additionally, you can attach images to provide further details about the reported problem.</p>
