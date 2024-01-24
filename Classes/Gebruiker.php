@@ -58,7 +58,7 @@ class Gebruiker {
         } else {
             return null;
         }
-        
+
     }
 
 
@@ -72,6 +72,17 @@ class Gebruiker {
         $updateSql->execute();
     }
     
+    // get the user information using gebruikerId for gps pins
+    public function getGebruiker($gebruikersId) {
+        require 'database/conn.php';
+
+        $statement = $conn->prepare("SELECT naam, email FROM gebruikers WHERE ID = :gebruikersId");
+        $statement->bindParam(':gebruikersId', $gebruikersId, PDO::PARAM_INT);
+        $statement->execute();
+        $results = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
 
 
     
