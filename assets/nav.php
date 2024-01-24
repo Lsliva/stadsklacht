@@ -73,7 +73,7 @@ require 'database/database.php';
                             echo '<li class="nav-item">< class="nav-link" href="klachtenread">All complaints</<a>/li>';
                             echo '<li class="nav-item"><a class="nav-link" href="readReview">All reviews</a></li>';    
                             echo '<li class="nav-item"><a class="nav-link" href="notification">notification</a></li>';  
-
+                            echo $notifecho;
 
                             break;
                         case 'NULL'|| NULL:
