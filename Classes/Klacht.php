@@ -242,14 +242,19 @@ $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAg
     public function updateKlacht($linkId, $omschrijving, $status)
 {
     require 'database/conn.php';
-
+    require 'Classes/Gps.php';
+    $gps = new Gps();
+    if ($status == 'Fixed') {
+        $gps->updateGps($linkId);
+    }
     $sql = $conn->prepare('UPDATE klachten SET omschrijving = :omschrijving, status = :status WHERE linkId = :linkId');
     $sql->bindParam(':linkId', $linkId);
     $sql->bindParam(':omschrijving', $omschrijving);
     $sql->bindParam(':status', $status);
     $sql->execute();
     $_SESSION['message'] = 'Klacht geupdate!';
-        header("Location: openstreetmap");
+    header("Location: openstreetmap");
+
 }
 
 
