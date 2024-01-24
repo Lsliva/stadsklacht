@@ -206,9 +206,7 @@ $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAg
             echo '<td>' . $klacht['timestamp'] . '</td>';
             echo '<td>' . $klacht['gebruikersId'] . '</td>';
             echo '<td>' . $klacht['linkId'] . '</td>';
-            echo '<td><a href="create_klacht.php">Create</a></td>';
-            echo '<td><a href="?delete=' . $klacht['id'] . '">Delete</a></td>';
-            echo '<td><a href="update_klacht.php">Update</a></td>';
+            echo '<td><a href="userupdate.php">Update</a></td>';
             echo '</tr>';
         }
 
@@ -230,16 +228,14 @@ $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAg
         // Uitvoeren van de query
         $sql->execute();
     
-        // Resultaat ophalen
-        $result = $sql->get_result();
+       // Resultaten ophalen als een associatieve array
+    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
     
-        // Aantal rijen tellen
-        $rowCount = $result->num_rows;
-    
-        // Sluiten van de prepared statement
-        $sql->close();
-    
-        return $rowCount;
+       // Aantal rijen tellen
+    $rowCount = count($result);
+
+    return $rowCount;
     }
     
     

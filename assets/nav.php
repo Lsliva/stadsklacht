@@ -54,21 +54,17 @@ require 'database/database.php';
                 if(isset($_SESSION['username'])) {
                     require 'rights.php';
                     require 'Classes/Klacht.php';
-                    $notif = new Klacht;
-                    $notifecho = $notif->NotificationCount(); 
+                    $klacht = new Klacht;
+                    $notifecho = $klacht->NotificationCount(); 
                      // Display different navigation bar based on user's 'functie'
                      switch($rights) {
                         case "admin":
                             echo '<li class="nav-item"><a class="nav-link" href="openstreetmap">map</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';
-<<<<<<< HEAD
                             echo '<li class="nav-item"><a class="nav-link" href="klachtenread">All complaints</a></li>';  
                             echo '<li class="nav-item"><a class="nav-link" href="notification">notification</a></li>';  
                             echo $notifecho;
 
-=======
-                            echo '<li class="nav-item"><a class="nav-link" href="readklacht">All complaints</a></li>';  
->>>>>>> 0ede77c63a6509e120d089fdb0ee88d0dca0de81
                             break;
                         case "management":
                             echo '<li class="nav-item"><a class="nav-link" href="openstreetmap">map</a></li>';
