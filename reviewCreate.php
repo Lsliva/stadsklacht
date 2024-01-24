@@ -1,3 +1,9 @@
+<?php
+require_once 'inlogCheck.php';
+
+session_abort();
+?>
+<?php include("assets/nav.php");?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +13,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            /* margin: 20px; */
         }
         form, #reviewSection {
             max-width: 400px;
