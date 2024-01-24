@@ -9,7 +9,7 @@ if (isset($_POST)) {
     $omschrijving = $_POST['omschrijving'];
 
     // check if there is any inapropriate word in the username or the email
-    $inapropriate_words = array("fuck", "hell","crap", "damn", "ass", "hoe", "whore", "kanker", "kut", "tering" , "shite", "nigger", "nigga" ,"shit", "bitch", "penis");
+    $inapropriate_words = array("fuck", "hell","crap", "damn", "as", "hoe", "whore", "kanker", "kut", "tering" , "shite", "nigger", "nigga" ,"shit", "bitch", "penis");
     foreach($inapropriate_words as $word){
         if (strpos($omschrijving, $word) !== false ) {
             echo "Sorry, inapropriate word found.";
