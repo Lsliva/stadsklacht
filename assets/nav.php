@@ -58,7 +58,7 @@ require 'database/database.php';
                         case "admin":
                             echo '<li class="nav-item"><a class="nav-link" href="openstreetmap">map</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';
-                            echo '<li class="nav-item"><a class="nav-link" href="klachtenread">All complaints</a></li>';  
+                            echo '<li class="nav-item"><a class="nav-link" href="readklacht">All complaints</a></li>';  
                             break;
                         case "management":
                             echo '<li class="nav-item"><a class="nav-link" href="openstreetmap">map</a></li>';
