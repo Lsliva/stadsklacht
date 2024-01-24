@@ -17,37 +17,47 @@
         box-sizing: border-box;
     }
 </style>
-<?php require_once 'inlogCheck.php'?>
-    <?php include("assets/nav.php"); ?>
-<?php $gebruikerId = intval($_SESSION['gebruikerId']);?>
-    <main>
-        <div class="content">
-            <form method="post" action="createKlacht.php">
-                <label for="omschrijving">Omschrijving</label>
-                <input type="text" name="omschrijving" required>
-                <label for="foto">foto</label>
-                <input type="text" name="foto" required>
-                <input type="hidden" id="gebruikersId" name="gebruikersId" value="<?php echo $gebruikerId; ?>">
-                <br>
-                        <div id="chooseLocationDiv">
-                            <?php 
-                            // Retrieve location details from session
-                            $location = isset($_SESSION['chosenLocation']) ? $_SESSION['chosenLocation'] : null;
-                            $address = isset($_SESSION['chosenAddress']) ? $_SESSION['chosenAddress'] : '';
-                            if (!empty($location) && !empty($address)) : 
-                                ?>
-                                <label for="Chosen location">Chosen Location:</label>
-                                <input type="text" id="chosenLocationCord" name="chosenLocationLat" value="<?php echo "{$location['lat']}"; ?>" readonly>
-                                <input type="text" id="chosenLocationCord" name="chosenLocationLon" value="<?php echo "{$location['lon']}"; ?>" readonly>
-                                <?php echo $address; ?>
-                                <input type="hidden" id="chosenLocationName" name="chosenLocationName" value="<?php echo $address; ?>">
+<body>
 
-                            <?php else : ?>
-                                <p>Location has yet to be chosen: <a href="klantStreetmap">Choose a location</a></p>
-                            <?php endif; ?>
-                        </div>
-                        <input type="submit" value="send complaint" class="submitButton">
-                    </form> 
+<?php require_once 'inlogCheck.php'?>
+<?php include("assets/nav.php"); ?>
+<?php $gebruikerId = intval($_SESSION['gebruikerId']);?>
+
+
+<main>
+    <div class="content">
+        <form method="post" action="createKlacht.php" enctype="multipart/form-data">
+            <label for="omschrijving">Omschrijving</label>
+            <input type="text" name="omschrijving" required>
+            <label for="foto">Foto</label>
+            <input type="file" name="foto" accept="image/*">
+            <input type="hidden" id="gebruikersId" name="gebruikersId" value="<?php echo $gebruikerId; ?>">
+            <input type="submit" value="send complaint" class="submitButton">
+        </form>
+
+            <!-- ... your existing location code ... -->
+            <?php
+            // Retrieve location details from session
+            $location = isset($_SESSION['chosenLocation']) ? $_SESSION['chosenLocation'] : null;
+            $address = isset($_SESSION['chosenAddress']) ? $_SESSION['chosenAddress'] : '';
+            if (!empty($location) && !empty($address)) :
+                ?> <br>
+                <label for="Chosen location">Chosen Location:</label>
+                <input type="text" id="chosenLocationCord" name="chosenLocationLat" value="<?php echo "{$location['lat']}"; ?>" readonly>
+                <input type="text" id="chosenLocationCord" name="chosenLocationLon" value="<?php echo "{$location['lon']}"; ?>" readonly><br>
+                <?php echo $address; ?>
+                <input type="hidden" id="chosenLocationName" name="chosenLocationName" value="<?php echo $address; ?>">
+
+            <?php else : ?>
+                <p>Location has yet to be chosen: <a href="klantStreetmap">Choose a location</a></p>
+            <?php endif; ?> <br>
+
+    </div>
+
+
+        <div id="chooseLocationDiv">
+
+
 
                     <div class="messagePHP"><?php
                         if (isset($_SESSION['message'])) {

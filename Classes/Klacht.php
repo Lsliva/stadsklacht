@@ -108,14 +108,19 @@ class Klacht
     }
 
     // methods specific to handling complaints
-    public function createKlachten($omschrijving, $gebruikersId)
+    public function createKlachten($omschrijving, $foto, $gebruikersId)
     {
-        require 'database/conn.php';
+
         // $gebruikersId = (int)$gebruikersId;
-        $sql = $conn->prepare('INSERT INTO klachten (omschrijving, gebruikersId) VALUES (:omschrijving, :gebruikersId)');
+        $sql = $conn->prepare('INSERT INTO klachten (omschrijving, foto, gebruikersId) VALUES (:omschrijving, :foto :gebruikersId)');
         $sql->bindParam(':omschrijving', $omschrijving);
+        $sql->bindParam(':foto', $foto);
         $sql->bindParam(':gebruikersId', $gebruikersId);
+
+
         $sql->execute();
+
+
 
         // Check if the execution was successful
         if ($sql->rowCount() > 0) {
