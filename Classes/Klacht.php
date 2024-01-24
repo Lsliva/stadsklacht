@@ -214,7 +214,35 @@ $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAg
 
         echo '</table></div>';
     }
+    public function NotificationCount() {
+        require 'database/conn.php';
 
+        // Huidige datum en tijd
+        $currentDateTime = new DateTime();
+    
+        // Twee weken geleden
+        $twoWeeksAgo = $currentDateTime->sub(new DateInterval('P14D'));
+    
+        // Voorbereiden van de SQL-query met een prepared statement
+// Query om rijen op te halen waar de timestampkolom meer dan twee weken oud is
+        $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAgo->format('Y-m-d H:i:s') . "'"); 
+    
+        // Uitvoeren van de query
+        $sql->execute();
+    
+        // Resultaat ophalen
+        $result = $sql->get_result();
+    
+        // Aantal rijen tellen
+        $rowCount = $result->num_rows;
+    
+        // Sluiten van de prepared statement
+        $sql->close();
+    
+        return $rowCount;
+    }
+    
+    
     public function updateKlacht($linkId, $omschrijving, $status)
 {
     require 'database/conn.php';

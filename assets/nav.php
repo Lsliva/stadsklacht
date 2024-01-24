@@ -53,6 +53,9 @@ require 'database/database.php';
                 // Check if user is logged in
                 if(isset($_SESSION['username'])) {
                     require 'rights.php';
+                    require 'Classes/Klacht.php';
+                    $notif = new Klacht;
+                    $notifecho = $notif->NotificationCount(); 
                      // Display different navigation bar based on user's 'functie'
                      switch($rights) {
                         case "admin":
@@ -60,6 +63,7 @@ require 'database/database.php';
                             echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="klachtenread">All complaints</a></li>';  
                             echo '<li class="nav-item"><a class="nav-link" href="notification">notification</a></li>';  
+                            echo $notifecho;
 
                             break;
                         case "management":
