@@ -20,11 +20,13 @@ session_abort();
 </head>
 <body>
 <?php
+
 ?><div class="readContent">
     <div class="readCreate">
         <div class="readCenter">
             <?php
-            $klacht->readKlacht();
+           
+            $klacht->readnotification();
             ?>
         </div>
 

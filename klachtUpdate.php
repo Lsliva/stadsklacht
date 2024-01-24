@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $omschrijving = $_POST['omschrijving'];
     $status = $_POST['status'];
 
-    // Create a new instance of the class
+    // Create a new voorbeeld of the class
     $klacht1 = new Klacht();
 
     // Call the update method on the object, passing in the form data as arguments
