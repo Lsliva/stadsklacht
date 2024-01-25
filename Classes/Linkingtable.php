@@ -56,28 +56,13 @@ class Linkingtable {
         //header("Location: readKlacht");
 
         // Controleer of rights NULL is in de sessie
-if ($_SESSION['rights'] === NULL) {
-    // Stuur de gebruiker door naar reviewPage.php met linkId in de URL
-    header("Location: reviewCreate.php?linkId=$last_id");
-    exit;
-}
+        if ($_SESSION['rights'] === NULL) {
+            // Stuur de gebruiker door naar reviewPage.php met linkId in de URL
+            header("Location: reviewCreate.php?linkId=$last_id");
+            exit;
+        }
 
     }
-    
-    // get the needed id from the linking table using linkId
-    // public function getIdWithLinkId($linkId, $columnName) {
-    //     require 'database/conn.php';
-    //     $query = "SELECT $columnName FROM linkingtable WHERE ID = :linkId";
-    //     $stmt = $this->pdo->prepare($query);
-    //     $stmt->bindParam(':linkId', $linkId, PDO::PARAM_INT);
-    //     $stmt->execute();
-
-    //     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    //     if (!$result) {
-    //         return null; // ID not found
-    //     }
-    // }
 
     // get corresponding linkId using either klachtenId or gpsId
     public function getLinkId($givenId, $columnName) {
@@ -89,11 +74,8 @@ if ($_SESSION['rights'] === NULL) {
     
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
     
-        if (!$result) {
-            return null; // ID not found
-        }
-    
-        return $result; // Return the found linkId
+        return $result;
+
     }
     
 

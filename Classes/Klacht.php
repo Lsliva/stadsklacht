@@ -212,15 +212,6 @@ class Klacht
         echo '</table></div>';
     }
     
-    
-    
-
-
-
-    
-   
-
-
     public function readnotification()
     {
         require 'database/conn.php';
@@ -401,12 +392,4 @@ class Klacht
         }
     }
     
-
-    
-
-
-
-
-
-
 }

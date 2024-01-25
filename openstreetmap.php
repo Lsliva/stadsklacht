@@ -137,143 +137,128 @@ session_start();
                     </div>`;
             }
 
-            function searchGps() {
-                var klachtenId = document.getElementById('klachtenId').value;
+            let responseData = []; // Store the fetched data globally
 
-                // Fetch GPS locations from PHP based on the provided klachtenId
-                fetch(`searchGps.php?klachtenId=${klachtenId}`)
-                .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Check for error response
-                        if ('alert' in data) {
-                            alert(data.alert); // Display the alert message
-                            return;
-                        }
-                        // Clear existing markers on the map
-                        map.eachLayer(layer => {
-                            if (layer instanceof L.Marker) {
-                                map.removeLayer(layer);
-                            }
-                        });
+function searchGps() {
+    var klachtenId = document.getElementById('klachtenId').value;
 
-                        // Create markers for each GPS location
-                        data.forEach(location => {
-                            const popupContent = generatePopupContent(location);
-                            L.marker([location.latitude, location.longitude])
-                                .addTo(map)
-                                .bindPopup(popupContent);
-                        });
+    // Fetch GPS locations from PHP based on the provided klachtenId
+    fetch(`searchGps.php?klachtenId=${klachtenId}`)
+        .then(response => response.json())
+        .then(data => {
+            // Check for error response
+            if ('alert' in data) {
+                alert(data.alert); // Display the alert message
+                return;
+            }
 
-                        // Update the total number of responses
-                        totalResponses = data.length;
+            // Store the fetched data globally
+            responseData = data;
 
-                        // Update the current response index and count display
-                        currentResponseIndex = 0;
-                        updateCountDisplay();
+            // Clear existing markers on the map
+            map.eachLayer(layer => {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
 
-                        // Display the map centered on the first GPS location if available
-                        if (data.length > 0) {
-                            var firstLocation = L.latLng(data[0].latitude, data[0].longitude);
+            // Create markers for each GPS location
+            data.forEach(location => {
+                const popupContent = generatePopupContent(location);
+                L.marker([location.latitude, location.longitude])
+                    .addTo(map)
+                    .bindPopup(popupContent);
+            });
 
-                        // Check if the first location is within Rotterdam bounds
-                        if (rotterdamBounds.contains(firstLocation)) {
-                            map.setView([data[0].latitude, data[0].longitude], 20);
-                        } else {
-                            alert("Outside of Rotterdam");
-                        }
+            // Update the total number of responses
+            totalResponses = data.length;
+
+            // Update the current response index and count display
+            currentResponseIndex = 0;
+            updateCountDisplay();
+
+            // Display the map centered on the first GPS location if available
+            if (data.length > 0) {
+                var firstLocation = L.latLng(data[0].latitude, data[0].longitude);
+
+                // Check if the first location is within Rotterdam bounds
+                if (rotterdamBounds.contains(firstLocation)) {
+                    map.setView([data[0].latitude, data[0].longitude], 20);
+                } else {
+                    alert("Outside of Rotterdam");
+                }
+            }
+
+            // Show/hide Next and Previous buttons based on the number of responses
+            toggleNextButton(data.length > 1);
+            togglePreviousButton(false); // Initially, hide Previous button since we're at the first response
+        })
+        .catch(error => console.error('Error fetching GPS locations:', error));
+        }
+
+        function showNext() {
+            // Increment the current response index
+            currentResponseIndex++;
+
+            // Update count display
+            updateCountDisplay();
+
+            // Check if there is data available and the index is within bounds
+            if (responseData.length > 0 && currentResponseIndex < responseData.length) {
+                // Clear existing markers on the map
+                map.eachLayer(layer => {
+                    if (layer instanceof L.Marker) {
+                        map.removeLayer(layer);
                     }
+                });
 
-                        // Show/hide Next and Previous buttons based on the number of responses
-                        toggleNextButton(data.length > 1);
-                        togglePreviousButton(false); // Initially, hide Previous button since we're at the first response
-                    })
-                    .catch(error => console.error('Error fetching GPS locations:', error));
+                const currentLocation = responseData[currentResponseIndex];
+                const popupContent = generatePopupContent(currentLocation);
+
+                L.marker([currentLocation.latitude, currentLocation.longitude])
+                    .addTo(map)
+                    .bindPopup(popupContent);
+
+                // Center the map on the current GPS location
+                map.setView([responseData[currentResponseIndex].latitude, responseData[currentResponseIndex].longitude], 20);
             }
 
-            function showNext() {
-                // Increment the current response index
-                currentResponseIndex++;
+            // Show/hide Next and Previous buttons based on the index
+            toggleNextButton(currentResponseIndex < responseData.length - 1);
+            togglePreviousButton(currentResponseIndex > 0);
+        }
 
-                // Update count display
-                updateCountDisplay();
+        function showPrevious() {
+            // Decrement the current response index
+            currentResponseIndex--;
 
-                // Fetch the data again or use the existing data array
-                var klachtenId = document.getElementById('klachtenId').value;
-                fetch(`searchGps.php?klachtenId=${klachtenId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Check if the response is still relevant (ignore if there's a newer request)
-                        if (currentResponseIndex < data.length) {
-                            // Clear existing markers on the map
-                            map.eachLayer(layer => {
-                                if (layer instanceof L.Marker) {
-                                    map.removeLayer(layer);
-                                }
-                            });
-                            const currentLocation = data[currentResponseIndex];
-                            const popupContent = generatePopupContent(currentLocation);
+            // Update count display
+            updateCountDisplay();
 
-                            L.marker([currentLocation.latitude, currentLocation.longitude])
-                                .addTo(map)
-                                .bindPopup(popupContent);
-                            // Center the map on the current GPS location
-                            map.setView([data[currentResponseIndex].latitude, data[currentResponseIndex].longitude], 20);
-                        }
-    
+            // Check if there is data available and the index is within bounds
+            if (responseData.length > 0 && currentResponseIndex >= 0 && currentResponseIndex < responseData.length) {
+                // Clear existing markers on the map
+                map.eachLayer(layer => {
+                    if (layer instanceof L.Marker) {
+                        map.removeLayer(layer);
+                    }
+                });
 
-                    // Center the map on the current GPS location
-                    map.setView([data[currentResponseIndex].latitude, data[currentResponseIndex].longitude], 20);
+                const currentLocation = responseData[currentResponseIndex];
+                const popupContent = generatePopupContent(currentLocation);
 
-                        // Show/hide Next and Previous buttons based on the index
-                        toggleNextButton(currentResponseIndex < data.length - 1);
-                        togglePreviousButton(currentResponseIndex > 0);
-                    })
-                    .catch(error => console.error('Error fetching GPS locations:', error));
+                L.marker([currentLocation.latitude, currentLocation.longitude])
+                    .addTo(map)
+                    .bindPopup(popupContent);
+
+                // Center the map on the current GPS location
+                map.setView([currentLocation.latitude, currentLocation.longitude], 20);
             }
 
-            function showPrevious() {
-                // Decrement the current response index
-                currentResponseIndex--;
-
-                // Update count display
-                updateCountDisplay();
-
-                // Fetch the data again or use the existing data array
-                var klachtenId = document.getElementById('klachtenId').value;
-                fetch(`searchGps.php?klachtenId=${klachtenId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Check if the response is still relevant (ignore if there's a newer request)
-                        if (currentResponseIndex >= 0 && currentResponseIndex < data.length) {
-                            // Clear existing markers on the map
-                            map.eachLayer(layer => {
-                                if (layer instanceof L.Marker) {
-                                    map.removeLayer(layer);
-                                }
-                            });
-
-                            const currentLocation = data[currentResponseIndex];
-                            const popupContent = generatePopupContent(currentLocation);
-
-                            L.marker([currentLocation.latitude, currentLocation.longitude])
-                                .addTo(map)
-                                .bindPopup(popupContent);
-
-                            // Center the map on the current GPS location
-                            map.setView([currentLocation.latitude, currentLocation.longitude], 20);
-                        }
-                        // Show/hide Next and Previous buttons based on the index
-                        toggleNextButton(currentResponseIndex < data.length - 1);
-                        togglePreviousButton(currentResponseIndex > 0);
-                    })
-                    .catch(error => console.error('Error fetching GPS locations:', error));
-            }
-
+            // Show/hide Next and Previous buttons based on the index
+            toggleNextButton(currentResponseIndex < responseData.length - 1);
+            togglePreviousButton(currentResponseIndex > 0);
+        }
             function updateCountDisplay() {
                 // Update the count display (assuming you have an element with id "responseCount")
                 document.getElementById('responseCount').textContent = `${currentResponseIndex + 1}/${totalResponses || 0}`;
