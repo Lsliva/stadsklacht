@@ -1,22 +1,33 @@
 <?php
-require 'Gebruiker.php';
+require 'database/conn.php';
+require 'assets/nav.php';
 
+// Controleer of het formulier is ingediend
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $gebruikerId = $_POST['gebruiker_id'];
+    $gebruikerId = $_POST['gebruikerId'];
     $naam = $_POST['naam'];
     $wachtwoord = $_POST['wachtwoord'];
 
-    $gebruiker = new Gebruiker();
-    $gebruiker->updateGebruiker($gebruikerId, $naam, $wachtwoord);
+    // Hash het wachtwoord voordat je het opslaat
+    $hashedWachtwoord = password_hash($wachtwoord, PASSWORD_DEFAULT);
 
-    // Redirect naar de pagina na de update
-    header('Location: lees_gebruikers.php'); // Vervang dit met de daadwerkelijke pagina waar je de gebruikersgegevens leest
+    // Voer de bijwerking uit
+    $updateSql = $conn->prepare('UPDATE gebruikers SET naam = :naam, wachtwoord = :wachtwoord WHERE id = :id');
+    $updateSql->bindParam(':id', $gebruikerId);
+    $updateSql->bindParam(':naam', $naam);
+    $updateSql->bindParam(':wachtwoord', $hashedWachtwoord);
+    $updateSql->execute();
+
+    // Redirect naar de gebruikerslijst of een andere pagina indien nodig
+    header("Location: account.php");
     exit();
-} else {
-    // Laad het formulier met de bestaande gebruikersgegevens
+} else 
+    // Toon het formulier om de gebruiker bij te werken
     $gebruikerId = $_GET['id'];
-    $gebruiker = new Gebruiker();
-    $gebruikerData = $gebruiker->getGebruiker($gebruikerId);
+    $sql = $conn->prepare('SELECT id, email, naam FROM gebruikers WHERE id = :id');
+    $sql->bindParam(':id', $gebruikerId);
+    $sql->execute();
+    $gebruiker = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -24,19 +35,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Gebruiker</title>
+    <title>Gebruiker Bijwerken</title>
 </head>
 <body>
-    <h2>Update Gebruiker</h2>
-    <form method="post" action="update_gebruiker.php">
-        <input type="hidden" name="gebruiker_id" value="<?php echo $gebruikerData['id']; ?>">
-        Naam: <input type="text" name="naam" value="<?php echo $gebruikerData['naam']; ?>"><br>
-        Wachtwoord: <input type="password" name="wachtwoord" value="<?php echo $gebruikerData['wachtwoord']; ?>"><br>
-        <input type="submit" value="Update">
+
+    <h2>Gebruiker Bijwerken</h2>
+    <form method="POST" action="update_gebruiker.php">
+        <input type="hidden" name="gebruikerId" value="<?php echo $gebruiker['id']; ?>">
+        <label for="naam">Naam:</label>
+        <input type="text" name="naam" value="<?php echo $gebruiker['naam']; ?>" required>
+        <br>
+        <label for="wachtwoord">Wachtwoord:</label>
+        <input type="password" name="wachtwoord" required>
+        <br>
+        <input type="submit" value="Bijwerken">
     </form>
+
 </body>
 </html>
-
-<?php
-}
-?>
