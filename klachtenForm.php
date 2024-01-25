@@ -22,11 +22,14 @@
 <?php $gebruikerId = intval($_SESSION['gebruikerId']);?>
 <main>
     <div class="content">
-        <form method="post" action="createKlacht.php">
-            <label for="omschrijving">Omschrijving</label>
+        <?php if (isset($_GET['error'])): ?>
+            <p><?php echo $_GET['error']; ?></p>
+        <?php endif ?>
+        <form method="post" action="createKlacht.php" enctype="multipart/form-data">
+            <label for="omschrijving">Omschrijving:</label>
             <input type="text" name="omschrijving" required>
-            <label for="foto">foto</label>
-            <input type="text" name="foto" required>
+            <label for="foto">foto:</label>
+            <input type="file" name="foto" accept="image/*">
             <input type="hidden" id="gebruikersId" name="gebruikersId" value="<?php echo $gebruikerId; ?>">
             <br>
             <div id="chooseLocationDiv">
@@ -76,5 +79,4 @@
 <script src="assets/klachten.js"></script>
 
 
-</body>
 </html>

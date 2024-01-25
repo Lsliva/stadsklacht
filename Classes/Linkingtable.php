@@ -13,7 +13,7 @@ class Linkingtable {
     }
 
     // create a linking table for the new complaint with its gps
-    public function createLinkTable($locationName, $latitude, $longitude, $omschrijving, $foto, $gebruikersId) {
+    public function createLinkTable($locationName, $latitude, $longitude, $omschrijving, $gebruikersId, $foto_name, $foto_size, $tmp_name) {
         require 'database/conn.php';
         require_once 'Classes/Klacht.php';
         require_once 'Classes/Gps.php';
@@ -21,8 +21,9 @@ class Linkingtable {
         $klachtClass = new Klacht;
         $gebruikersId = intval($gebruikersId);
         // create klacht and return the primairy key
-        $klachtId = $klachtClass->createKlachten($omschrijving, $foto, $gebruikersId, );
+        $klachtId = $klachtClass->createKlachten($omschrijving, $gebruikersId);
 
+        $klachtClass->foto($klachtId, $foto_name, $foto_size, $tmp_name);
         // create the gps location and return the primairy key
         $gpsId = $gpsClass->sendGps($locationName, $latitude, $longitude);
 
