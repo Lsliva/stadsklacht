@@ -8,7 +8,8 @@
 body {
     display: flex;
     flex-direction: column;
-    
+    color: #0c0c0c;
+
 }
 .content {
  max-height: 75%;
@@ -513,7 +514,9 @@ li {
 .one {
     padding: 5px;
 }
-
+.readCenter {
+  overflow-y: scroll;
+}
 @keyframes rainbow_animation {
 0%,100% {
     background-position: 0 0;
