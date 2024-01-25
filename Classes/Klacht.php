@@ -298,7 +298,8 @@ $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAg
             echo '<td>' . $klacht['linkId'] . '</td>';
             echo '<td><a href="create_klacht.php">Create</a></td>';
             echo '<td><a href="update_klacht.php">Update</a></td>';
-            echo '<td><a href="delete_klacht.php?linkId=' . $klacht['linkId'] . '">Delete</a></td>'; // Add this line for the delete button
+            echo '<td><a href="delete_klacht.php?linkId=' . $klacht['linkId'] . '&klantwaarde=' . $klacht['gebruikersId'] . '">Delete</a></td>';
+
     
             echo '</tr>';
         }

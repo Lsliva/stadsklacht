@@ -35,10 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/style.css">
     <title>Gebruiker Bijwerken</title>
 </head>
 <body>
-
+    <div class="update">
     <h2>Gebruiker Bijwerken</h2>
     <form method="POST" action="update_gebruiker.php">
         <input type="hidden" name="gebruikerId" value="<?php echo $gebruiker['id']; ?>">
@@ -50,6 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br>
         <input type="submit" value="Bijwerken">
     </form>
-
+    </div>
 </body>
 </html>

@@ -70,7 +70,7 @@ require 'database/database.php';
                         case "management":
                             echo '<li class="nav-item"><a class="nav-link" href="openstreetmap">map</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="klantStreetmap">+ complaint</a></li>';    
-                            echo '<li class="nav-item">< class="nav-link" href="klachtenread">All complaints</<a>/li>';
+                            echo '<li class="nav-item"><a class="nav-link" href="klachtenread">All complaints</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="readReview">All reviews</a></li>';    
                             echo '<li class="nav-item"><a class="nav-link" href="notification">notification</a></li>';  
                             echo $notifecho;

@@ -10,7 +10,14 @@ if (isset($_GET['linkId']) && is_numeric($_GET['linkId'])) {
     $klacht->deleteKlacht($linkId);
 
     // Redirect back to the read page after deletion
-    header("Location: readKlacht.php");
+    if  (isset($_GET["klantwaarde"]))
+    {
+        header("Location: readklacht");
+    }else{
+        header("Location: klachtenread");
+    }
+    
+   
     exit();
 } else {
     // Handle invalid or missing ID
