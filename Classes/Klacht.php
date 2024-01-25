@@ -132,6 +132,7 @@ class Klacht
         require 'database/conn.php';
 
 
+
         $target_dir = 'assets/img/';
 
         $img_ex = pathinfo($foto_name, PATHINFO_EXTENSION);
@@ -183,12 +184,15 @@ class Klacht
             $deleteKlachtRecord = $conn->prepare('DELETE FROM klachten WHERE id = ?');
             $deleteKlachtRecord->execute([$id]);
         }
+
+    
+
         $sql = $conn->prepare('SELECT * FROM klachten');
         $sql->execute();
-
+    
         echo '<div style="display: flex; padding: 24px; font-size: 20px; justify-content: center; text-align: center; color: white; flex-direction: column; "><table>';
         echo '<tr><th>ID</th><th>Omschrijving</th><th>Foto ID</th> <th>Status</th> <th>Timestamp</th><th>Gebruikers ID</th><th>linkId</th><th>Acties</th><th>Acties</th><th>Acties</th></tr>';
-
+    
         foreach ($sql as $klacht) {
             echo '<tr>';
             echo '<td>' . $klacht['id'] . '</td>';
@@ -199,13 +203,23 @@ class Klacht
             echo '<td>' . $klacht['gebruikersId'] . '</td>';
             echo '<td>' . $klacht['linkId'] . '</td>';
             echo '<td><a href="create_klacht.php">Create</a></td>';
-            echo '<td><a href="?delete=' . $klacht['id'] . '">Delete</a></td>';
-            echo '<td><a href="update_klacht.php">Update</a></td>';
+            echo '<td><a href="update_klacht.php?id=' . $klacht['id'] . '">Update</a></td>';
+            echo '<td><a href="delete_klacht.php?linkId=' . $klacht['linkId'] . '">Delete</a></td>'; // Add this line for the delete button
+    
             echo '</tr>';
         }
-
+    
         echo '</table></div>';
     }
+    
+    
+    
+
+
+
+    
+   
+
 
     public function readnotification()
     {
@@ -247,6 +261,8 @@ class Klacht
             echo '<td>' . $klacht['gebruikersId'] . '</td>';
             echo '<td>' . $klacht['linkId'] . '</td>';
             echo '<td><a href="userupdate.php">Update</a></td>';
+            echo '<td><a href="delete_klacht.php?linkId=' . $klacht['linkId'] . '">Delete</a></td>'; // Add this line for the delete button
+            
             echo '</tr>';
         }
 
@@ -316,35 +332,19 @@ class Klacht
     public function readKlachtGebruiker($gebruikersId)
     {
         require 'database/conn.php';
-
-
+    
         if (!isset($_SESSION['gebruikerId'])) {
             // Redirect naar de inlogpagina als de gebruiker niet is ingelogd
             header("Location: readKlacht.php");
             exit();
         }
-
-        // Remove the following line, as $gebruikersId is already set using $_SESSION['gebruikersId']
-        // $gebruikersId = $_SESSION['gebruikersId'];
-
-        if (isset($_GET['delete'])) {
-            $id = $_GET['delete'];
-
-            // Eerst verwijderen van gerelateerde records in de 'gps' tabel
-            $deleteGpsRecords = $conn->prepare('DELETE FROM gps WHERE klachtenId = ?');
-            $deleteGpsRecords->execute([$id]);
-
-            // Nu het record verwijderen uit de 'klachten' tabel
-            $deleteKlachtRecord = $conn->prepare('DELETE FROM klachten WHERE id = ? AND gebruikersId = ?');
-            $deleteKlachtRecord->execute([$id, $gebruikersId]);
-        }
-
+    
         $sql = $conn->prepare('SELECT * FROM klachten WHERE gebruikersId = ?');
         $sql->execute([$gebruikersId]);
-
+    
         echo '<div style="display: flex; padding: 24px; font-size: 20px; justify-content: center; text-align: center; color: white; flex-direction: column; "><table>';
-        echo '<tr><th>ID</th><th>Omschrijving</th><th>Foto ID</th> <th>Status</th> <th>Timestamp</th><th>Gebruikers ID</th><th>linkId</th><th>Acties</th><th>Acties</th><th>Acties</th></tr>';
-
+        echo '<tr><th>ID</th><th>Omschrijving</th><th>Foto ID</th><th>Status</th><th>Timestamp</th><th>Gebruikers ID</th><th>linkId</th><th>Acties</th><th>Acties</th><th>Acties</th></tr>';
+    
         foreach ($sql as $klacht) {
             echo '<tr>';
             echo '<td>' . $klacht['id'] . '</td>';
@@ -355,11 +355,58 @@ class Klacht
             echo '<td>' . $klacht['gebruikersId'] . '</td>';
             echo '<td>' . $klacht['linkId'] . '</td>';
             echo '<td><a href="create_klacht.php">Create</a></td>';
-            echo '<td><a href="?delete=' . $klacht['id'] . '">Delete</a></td>';
             echo '<td><a href="update_klacht.php">Update</a></td>';
+            echo '<td><a href="delete_klacht.php?linkId=' . $klacht['linkId'] . '&klantwaarde=' . $klacht['gebruikersId'] . '">Delete</a></td>';
+
+    
             echo '</tr>';
         }
-
+    
         echo '</table></div>';
     }
+
+    
+
+
+    public function deleteKlacht($linkId)
+    {
+        require 'database/conn.php';
+    
+        try {
+            // Disable foreign key checks temporarily
+            $conn->exec('SET foreign_key_checks = 0;');
+    
+            // Delete associated records from the linkingtable first
+            $deleteLinkingQuery = $conn->prepare('DELETE FROM linkingtable WHERE ID = :linkId');
+            $deleteLinkingQuery->bindParam(':linkId', $linkId, PDO::PARAM_INT);
+            $deleteLinkingQuery->execute();
+    
+            // Enable foreign key checks again
+            $conn->exec('SET foreign_key_checks = 1;');
+    
+            // Now delete the record from klachten
+            $deleteKlachtenQuery = $conn->prepare('DELETE FROM klachten WHERE linkId = :linkId');
+            $deleteKlachtenQuery->bindParam(':linkId', $linkId, PDO::PARAM_INT);
+            $deleteKlachtenQuery->execute();
+    
+            // Also, delete from the 'gps' table if needed
+            $deleteGPSQuery = $conn->prepare('DELETE FROM gps WHERE linkId = :linkId');
+            $deleteGPSQuery->bindParam(':linkId', $linkId, PDO::PARAM_INT);
+            $deleteGPSQuery->execute();
+    
+            echo "Klacht successfully deleted.";
+        } catch (PDOException $e) {
+            // Handle the exception
+            echo "Error deleting klacht: " . $e->getMessage();
+        }
+    }
+    
+
+    
+
+
+
+
+
+
 }

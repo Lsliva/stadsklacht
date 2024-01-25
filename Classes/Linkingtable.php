@@ -53,7 +53,15 @@ class Linkingtable {
         
 
         $_SESSION['message'] = 'Complaint sent successfully!';
-        header("Location: readKlacht");
+        //header("Location: readKlacht");
+
+        // Controleer of rights NULL is in de sessie
+if ($_SESSION['rights'] === NULL) {
+    // Stuur de gebruiker door naar reviewPage.php met linkId in de URL
+    header("Location: reviewCreate.php?linkId=$last_id");
+    exit;
+}
+
     }
     
     // get the needed id from the linking table using linkId

@@ -8,7 +8,8 @@
 body {
     display: flex;
     flex-direction: column;
-    
+    color: #0c0c0c;
+
 }
 .content {
  max-height: 75%;
@@ -513,7 +514,9 @@ li {
 .one {
     padding: 5px;
 }
-
+.readCenter {
+  overflow-y: scroll;
+}
 @keyframes rainbow_animation {
 0%,100% {
     background-position: 0 0;
@@ -609,4 +612,34 @@ button a {
     margin-left: 4%;
     margin-right: 4%;
   }
+
+  .update {
+    width: 300px; /* Pas de breedte aan zoals gewenst */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.update label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.update input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+.update input[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+}
+}
+
+
+
+
