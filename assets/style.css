@@ -613,33 +613,32 @@ button a {
     margin-right: 4%;
   }
 
-  .update {
-    width: 300px; /* Pas de breedte aan zoals gewenst */
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
+  .content {
+    max-height: 75%;
+       min-height: 75%;
+       /* max-width: 100%; */
+       margin-left: 15%;
+       margin-right: 15%;
+       margin-bottom: 5%;
+       margin-top: 5%;
+       padding: 2rem;
+       height: auto;
+       /* min-width: 1000px; */
+       /* width: auto; */
+      position: relative;
+       /* display: flex;
+       flex-direction: row; */
+       /* justify-content: space-between; */
+       /* border-width: 100px; */
+       overflow: hidden;
+       box-shadow: 40px 40px 500px rgb(0, 0, 0);
+       border-radius: 20px;
+       gap: 1rem;
+   }
+
+   
+
+
+
 }
-
-.update label {
-    display: block;
-    margin-bottom: 8px;
-}
-
-.update input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 16px;
-    box-sizing: border-box;
-}
-
-.update input[type="submit"] {
-    background-color: #4caf50;
-    color: white;
-    cursor: pointer;
-}
-}
-
-
-
-

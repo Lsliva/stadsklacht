@@ -2,6 +2,7 @@
 require 'database/conn.php';
 require 'assets/nav.php';
 
+
 // Controleer of het formulier is ingediend
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $gebruikerId = $_POST['gebruikerId'];
@@ -39,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Gebruiker Bijwerken</title>
 </head>
 <body>
-    <div class="update">
+    <div class="content">
     <h2>Gebruiker Bijwerken</h2>
     <form method="POST" action="update_gebruiker.php">
         <input type="hidden" name="gebruikerId" value="<?php echo $gebruiker['id']; ?>">
