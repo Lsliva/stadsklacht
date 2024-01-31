@@ -1,8 +1,11 @@
 <?php
 require_once 'inlogCheck.php';
 
-session_abort();
-?>
+session_start();
+if ($_SESSION['rights'] !== 'management' && $_SESSION['rights'] !== 'admin'){
+    header("Location: restrictedContent");
+} else {
+session_abort();?>
 <?php include("assets/nav.php");?>
 <!doctype html>
 <html lang="en">
@@ -29,6 +32,7 @@ include("Classes/Review.php");
 
     </div>
 </div>
+<?php } ?>
 
 </body>
 </html>

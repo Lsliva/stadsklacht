@@ -115,6 +115,7 @@ session_start();
                         <form method="POST" action="klachtUpdate.php">
                             <input type="hidden" name="gebruikersId" value="${location.gebruikersId}">
                             <input type="hidden" name="linkId" value="${location.linkId}">
+                            
                             <label>Naam:</label>
                             ${location.naam}
                             <br>
@@ -128,10 +129,9 @@ session_start();
                             <br>
                             <label>Timestamp:</label>
                             ${location.timestamp}
-                            <div class="deleteButton"><a href="deleteKlacht.php?action=delete&linkId='${location.linkId}">Delete<box-icon size="sm" type='solid' name='trash'></box-icon></a></div>
+                            <div class="deleteButton"><a href="delete_klacht.php?linkId=${location.linkId}">Delete<box-icon size="sm" type='solid' name='trash'></box-icon></a></div>
                             <div class="formEnd">
                                 <input type="submit" value="Submit">                      
-                                <p><a id="cancel" href="menuKlant">Cancel</a></p>
                             </div>
                         </form>
                     </div>`;
