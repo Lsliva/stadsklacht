@@ -127,10 +127,66 @@ class Klacht
         }
     }
 
+    public function foto($klachtId, $foto_name, $foto_size, $tmp_name)
+    {
+        require 'database/conn.php';
+
+
+
+        $target_dir = 'assets/img/';
+
+        $img_ex = pathinfo($foto_name, PATHINFO_EXTENSION);
+        $img_ex_lc = strtolower($img_ex);
+        // Generate a unique file name for the image
+        $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
+
+        // Define the target path for the image
+        $target_path = $target_dir . $new_img_name;
+
+        // Move the uploaded file to the target directory
+        if (move_uploaded_file($tmp_name, $target_path)) {
+            try {
+                // Prepare SQL query with a parameter placeholder
+                $sql = "UPDATE klachten SET foto = :foto WHERE id = :klachtId";
+                $stmt = $conn->prepare($sql);
+
+                // Bind the parameter values
+                $stmt->bindParam(':foto', $new_img_name, PDO::PARAM_STR);
+                $stmt->bindParam(':klachtId', $klachtId, PDO::PARAM_INT);
+
+                // Execute the query
+                $stmt->execute();
+
+                // Redirect to view.php
+                return true; // Terminate script execution after redirection
+            } catch (PDOException $e) {
+                // Catching any exceptions that occur during the query execution and displaying an error message
+                $em = "Error: " . $e->getMessage();
+                header("Location: index.php?error=$em");
+                exit(); // Terminate script execution after redirection
+            }
+        }
+    }
+
     public function readKlacht()
     {
         require 'database/conn.php';
+
+
+        if (isset($_GET['delete'])) {
+            $id = $_GET['delete'];
+
+            // First, delete related records in the 'gps' table
+            $deleteGpsRecords = $conn->prepare('DELETE FROM gps WHERE klachtenId = ?');
+            $deleteGpsRecords->execute([$id]);
+
+            // Now, delete the record from the 'klachten' table
+            $deleteKlachtRecord = $conn->prepare('DELETE FROM klachten WHERE id = ?');
+            $deleteKlachtRecord->execute([$id]);
+        }
+
     
+
         $sql = $conn->prepare('SELECT * FROM klachten');
         $sql->execute();
     
@@ -156,39 +212,30 @@ class Klacht
         echo '</table></div>';
     }
     
-    
-    
-
-
-
-    
-   
-
-
     public function readnotification()
     {
         require 'database/conn.php';
 
-        
-    if (isset($_GET['delete'])) {
-        $id = $_GET['delete'];
 
-        // First, delete related records in the 'gps' table
-        $deleteGpsRecords = $conn->prepare('DELETE FROM gps WHERE klachtenId = ?');
-        $deleteGpsRecords->execute([$id]);
+        if (isset($_GET['delete'])) {
+            $id = $_GET['delete'];
 
-        // Now, delete the record from the 'klachten' table
-        $deleteKlachtRecord = $conn->prepare('DELETE FROM klachten WHERE id = ?');
-        $deleteKlachtRecord->execute([$id]);
-    }
+            // First, delete related records in the 'gps' table
+            $deleteGpsRecords = $conn->prepare('DELETE FROM gps WHERE klachtenId = ?');
+            $deleteGpsRecords->execute([$id]);
+
+            // Now, delete the record from the 'klachten' table
+            $deleteKlachtRecord = $conn->prepare('DELETE FROM klachten WHERE id = ?');
+            $deleteKlachtRecord->execute([$id]);
+        }
         // Huidige datum en tijd
-$currentDateTime = new DateTime();
+        $currentDateTime = new DateTime();
 
 // Twee weken geleden
-$twoWeeksAgo = $currentDateTime->sub(new DateInterval('P14D'));
+        $twoWeeksAgo = $currentDateTime->sub(new DateInterval('P14D'));
 
 // Query om rijen op te halen waar de timestampkolom meer dan twee weken oud is
-$sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAgo->format('Y-m-d H:i:s') . "'"); 
+        $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAgo->format('Y-m-d H:i:s') . "'");
 
         $sql->execute();
 
@@ -212,55 +259,57 @@ $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAg
 
         echo '</table></div>';
     }
-    public function NotificationCount() {
+
+    public function NotificationCount()
+    {
         require 'database/conn.php';
 
         // Huidige datum en tijd
         $currentDateTime = new DateTime();
-    
+
         // Twee weken geleden
         $twoWeeksAgo = $currentDateTime->sub(new DateInterval('P14D'));
-    
+
         // Voorbereiden van de SQL-query met een prepared statement
 // Query om rijen op te halen waar de timestampkolom meer dan twee weken oud is
-        $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAgo->format('Y-m-d H:i:s') . "'"); 
-    
+        $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAgo->format('Y-m-d H:i:s') . "'");
+
         // Uitvoeren van de query
         $sql->execute();
-    
-       // Resultaten ophalen als een associatieve array
-    $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-    
-       // Aantal rijen tellen
-    $rowCount = count($result);
+        // Resultaten ophalen als een associatieve array
+        $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-    return $rowCount;
+
+        // Aantal rijen tellen
+        $rowCount = count($result);
+
+        return $rowCount;
     }
-    
-    
+
+
     public function updateKlacht($linkId, $omschrijving, $status)
-{
-    require 'database/conn.php';
-    require 'Classes/Gps.php';
-    $gps = new Gps();
-    if ($status == 'Fixed') {
-        $gps->updateGps($linkId);
+    {
+        require 'database/conn.php';
+        require 'Classes/Gps.php';
+        $gps = new Gps();
+        if ($status == 'Fixed') {
+            $gps->updateGps($linkId);
+        }
+        $sql = $conn->prepare('UPDATE klachten SET omschrijving = :omschrijving, status = :status WHERE linkId = :linkId');
+        $sql->bindParam(':linkId', $linkId);
+        $sql->bindParam(':omschrijving', $omschrijving);
+        $sql->bindParam(':status', $status);
+        $sql->execute();
+        $_SESSION['message'] = 'Klacht geupdate!';
+        header("Location: openstreetmap");
+
     }
-    $sql = $conn->prepare('UPDATE klachten SET omschrijving = :omschrijving, status = :status WHERE linkId = :linkId');
-    $sql->bindParam(':linkId', $linkId);
-    $sql->bindParam(':omschrijving', $omschrijving);
-    $sql->bindParam(':status', $status);
-    $sql->execute();
-    $_SESSION['message'] = 'Klacht geupdate!';
-    header("Location: openstreetmap");
-
-}
 
 
-    
     // get the klachten information using klachtenId for gps pins
-    public function getKlachten($linkId) {
+    public function getKlachten($linkId)
+    {
         require 'database/conn.php';
 
         $statement = $conn->prepare("SELECT omschrijving, foto, status, timestamp, gebruikersId FROM klachten WHERE linkId = :linkId");
@@ -306,6 +355,7 @@ $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAg
     
         echo '</table></div>';
     }
+
     
 
 
@@ -342,11 +392,4 @@ $sql = $conn->prepare("SELECT * FROM klachten WHERE timestamp < '" . $twoWeeksAg
         }
     }
     
-
-    
-
-
-
-
-
 }

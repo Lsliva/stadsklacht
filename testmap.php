@@ -13,17 +13,19 @@
 </head>
 <body>
     <?php
-    // require 'assets/nav.php';
-    //     require 'Classes/Linkingtable.php';
-    //     $newlink = new Linkingtable();
-    //     $newlink->getLinkId(20, 'klachtenId');
-    $klachtenId = 20;
+    require 'assets/nav.php';
+        // require 'Classes/Linkingtable.php';
+        // $newlink = new Linkingtable();
+        // $ECHO = $newlink->getLinkId(25, 'klachtenId');
+        // var_dump($ECHO);
+
+    $klachtenId = 97;
     require 'Classes/Gps.php';
     $newGps = new Gps();    
     echo json_encode($newGps->searchGpsByKlachtenId($klachtenId));
+    // echo $newGps->getGps();
     ?>
     <div id="map"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
     <script>
         function initMap() {
             // Initialize the map

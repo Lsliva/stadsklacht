@@ -43,16 +43,29 @@ class Gps {
         require 'Classes/Linkingtable.php';
         $linkingtable = new Linkingtable();
         $columnName = 'klachtenId';
-        $linkId =  (int)$linkingtable->getLinkId($klachtenId, $columnName);
+        $linkIdValue =  $linkingtable->getLinkId($klachtenId, $columnName);
+        // Check if linkIds exist
+        
+        if ($linkIdValue === null || empty($linkIdValue)) {
+            header('Content-Type: application/json');
+
+            // KlachtId does not exist, return an error response
+            echo json_encode(['alert' => 'klachtenId not found']);
+            exit();
+        }
+        $linkId = $linkIdValue['ID'];
 
         $statement = $conn->prepare("SELECT locationName, latitude, longitude, timestamp FROM gps WHERE linkId = :linkId");
-        $statement->bindParam(':linkId', $linkId);
+        $statement->bindParam(':linkId', $linkId, PDO::PARAM_INT);
         $statement->execute();
+        
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
         $count = count($results);
+        
         if ($count == 0) {
             // KlachtId does not exist, return an error response
             echo json_encode(['alert' => 'linkId not found']);
+            // var_dump($results);
             exit();
         }
 
